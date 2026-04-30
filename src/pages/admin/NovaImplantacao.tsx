@@ -290,6 +290,14 @@ export default function NovaImplantacao() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {isPrefilled && (
+              <div className="mb-4 flex items-start gap-2 rounded-lg border border-primary/20 bg-primary/5 p-3 text-sm">
+                <CalendarCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                <span className="text-foreground">
+                  Pré-preenchido a partir do calendário de disponibilidade — analista e data já selecionados.
+                </span>
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="clientName">Nome do Cliente *</Label>
