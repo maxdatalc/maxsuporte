@@ -11,9 +11,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import { Loader2, ArrowLeft, CheckCircle2, XCircle, Upload, Copy, Image as ImageIcon } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 import { useToast } from "@/hooks/use-toast";
-import { OncenterDemandTab } from "@/components/demandas/OncenterDemandTab";
 
 interface DemandStep {
   id: string;
@@ -311,14 +310,6 @@ export default function DemandaDetalhe() {
           </CardContent>
         </Card>
 
-        {/* Tabs: Steps + Oncenter */}
-        <Tabs defaultValue="steps">
-          <TabsList>
-            <TabsTrigger value="steps">Passos do Procedimento</TabsTrigger>
-            <TabsTrigger value="oncenter">Atendimento Oncenter</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="steps">
         <Card>
           <CardHeader>
             <CardTitle>Passos do Procedimento</CardTitle>
@@ -514,12 +505,6 @@ export default function DemandaDetalhe() {
             })}
           </CardContent>
         </Card>
-          </TabsContent>
-
-          <TabsContent value="oncenter">
-            <OncenterDemandTab demandId={demand.id} isAdmin={role === "admin"} />
-          </TabsContent>
-        </Tabs>
 
         {/* Hidden file input */}
         <input

@@ -6,7 +6,7 @@ import { getRoleLabel } from "@/lib/roleLabels";
 import {
   LayoutDashboard, ClipboardList, X, BarChart3, Calendar, DollarSign,
   FileText, ClipboardCheck, MessageSquare, BookOpen, Brain, Bot,
-  ListChecks, FolderKanban, Users, ChevronDown, Settings, PieChart, Radio, Link2, Building, Headphones,
+  ListChecks, FolderKanban, Users, ChevronDown, Settings, PieChart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -67,18 +67,6 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         { to: "/admin/comissoes", icon: DollarSign, label: "Comissões" },
         { to: "/admin/base-conhecimento", icon: Brain, label: "Base Conhecimento IA" },
         { to: "/admin/demandas/modelos", icon: ListChecks, label: "Modelos POP" },
-        { to: "/admin/oncenter-test", icon: Radio, label: "Teste Oncenter" },
-      ],
-    },
-    {
-      type: "group",
-      icon: Headphones,
-      label: "Oncenter",
-      children: [
-        { to: "/admin/oncenter-usuarios", icon: Link2, label: "Vínculos Usuários" },
-        { to: "/admin/oncenter-clientes", icon: Building, label: "Vínculos Clientes" },
-        { to: "/admin/oncenter-relatorios", icon: BarChart3, label: "Relatórios Oncenter" },
-        { to: "/admin/oncenter-test", icon: Radio, label: "Teste API" },
       ],
     },
   ];
