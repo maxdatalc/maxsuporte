@@ -462,14 +462,23 @@ export default function DisponibilidadeCalendario() {
                   </h4>
                   <div className="grid gap-2 md:grid-cols-2">
                     {freeImplementers.map((schedule) => (
-                      <div
-                        key={schedule.implementer.user_id}
-                        className="rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-900 dark:bg-green-950"
-                      >
-                        <span className="font-medium text-green-700 dark:text-green-300">
-                          {schedule.implementer.name}
-                        </span>
-                      </div>
+                      <TooltipProvider key={schedule.implementer.user_id}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
+                              type="button"
+                              onClick={() => selectedDate && handleCreateImplantacao(schedule.implementer.user_id, selectedDate)}
+                              className="group flex items-center justify-between rounded-lg border border-green-200 bg-green-50 p-3 text-left transition-colors hover:bg-green-100 dark:border-green-900 dark:bg-green-950 dark:hover:bg-green-900"
+                            >
+                              <span className="font-medium text-green-700 dark:text-green-300">
+                                {schedule.implementer.name}
+                              </span>
+                              <Plus className="h-4 w-4 text-green-700 opacity-0 group-hover:opacity-100 transition-opacity dark:text-green-300" />
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent>Criar implantação para este analista neste dia</TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     ))}
                   </div>
                 </div>
