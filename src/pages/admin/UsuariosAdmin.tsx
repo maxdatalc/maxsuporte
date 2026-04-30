@@ -9,8 +9,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2, UserCheck, UserX, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useAuth } from "@/lib/auth";
-import { AvatarUpload } from "@/components/AvatarUpload";
 import { getRoleLabel, MODULE_LABELS, ALL_MODULES } from "@/lib/roleLabels";
 import {
   Dialog,
