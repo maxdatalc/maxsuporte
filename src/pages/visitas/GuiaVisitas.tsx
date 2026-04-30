@@ -1,17 +1,31 @@
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, Brain, Users, Lightbulb, CheckCircle, BookOpen } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { MessageSquare, Brain, Users, Lightbulb, CheckCircle, BookOpen, X } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/lib/auth";
 
 export default function GuiaVisitas() {
+  const navigate = useNavigate();
+  const { role } = useAuth();
+  const handleClose = () => {
+    navigate(role === "admin" ? "/admin/visitas" : "/implantador/visitas");
+  };
+
   return (
     <DashboardLayout>
       <div className="space-y-6 max-w-3xl">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-            <BookOpen className="h-6 w-6 text-primary" /> Guia do Módulo de Visitas
-          </h1>
-          <p className="text-muted-foreground mt-1">Tudo que você precisa saber sobre o módulo de visitas com IA</p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+              <BookOpen className="h-6 w-6 text-primary" /> Guia do Módulo de Visitas
+            </h1>
+            <p className="text-muted-foreground mt-1">Tudo que você precisa saber sobre o módulo de visitas com IA</p>
+          </div>
+          <Button variant="ghost" size="icon" onClick={handleClose} aria-label="Fechar guia">
+            <X className="h-5 w-5" />
+          </Button>
         </div>
 
         <Card>
