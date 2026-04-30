@@ -77,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             .maybeSingle(),
           supabase
             .from("profiles")
-            .select("id, name, email")
+            .select("id, name, email, avatar_url")
             .eq("user_id", session.user.id)
             .maybeSingle(),
         ]).then(([roleResult, profileResult]) => {
@@ -105,8 +105,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile(null);
   };
 
+  const refreshProfile = async () => {
+    if (!user) return;
+    const { data } = await supabase
+      .from("profiles")
+      .select("id, name, email, avatar_url")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (data) setProfile(data);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, session, role, profile, loading, signOut }}>
+    <AuthContext.Provider value={{ user, session, role, profile, loading, signOut, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );
