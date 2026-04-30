@@ -53,7 +53,7 @@ export default function UsuariosAdmin() {
     try {
       const { data: profiles } = await supabase
         .from("profiles")
-        .select("id, user_id, name, email, is_active, created_at");
+        .select("id, user_id, name, email, is_active, created_at, avatar_url");
 
       if (profiles) {
         const userIds = profiles.map((p) => p.user_id);
@@ -72,6 +72,7 @@ export default function UsuariosAdmin() {
           role: rolesMap.get(p.user_id) || "implantador",
           is_active: p.is_active ?? true,
           created_at: p.created_at,
+          avatar_url: (p as any).avatar_url ?? null,
         }));
 
         setUsers(usersWithRoles);
