@@ -44,9 +44,15 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     { to: "/admin/minhas-implantacoes", icon: ClipboardList, label: "Minhas Implantações" },
     { to: "/admin/demandas", icon: FolderKanban, label: "Demandas" },
     { to: "/admin/disponibilidade", icon: Calendar, label: "Disponibilidade" },
-    { to: "/admin/visitas", icon: MessageSquare, label: "Visitas" },
-    { to: "/admin/guia-visitas", icon: BookOpen, label: "Guia Visitas" },
-    { to: "/admin/metricas-ia", icon: Bot, label: "Métricas IA" },
+    {
+      type: "group",
+      icon: MessageSquare,
+      label: "Visitas",
+      children: [
+        { to: "/admin/visitas", icon: MessageSquare, label: "Visitas" },
+        { to: "/admin/guia-visitas", icon: BookOpen, label: "Guia Visitas" },
+      ],
+    },
     {
       type: "group",
       icon: PieChart,
@@ -56,6 +62,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         { to: "/admin/relatorio-demandas", icon: BarChart3, label: "Performance Operacional" },
         { to: "/admin/relatorio-comissoes", icon: FileText, label: "Comissões" },
         { to: "/admin/solicitacoes-conclusao", icon: ClipboardCheck, label: "Solicitações" },
+        { to: "/admin/metricas-ia", icon: Bot, label: "Métricas IA" },
       ],
     },
     {
@@ -75,8 +82,15 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     { to: "/implantador", icon: LayoutDashboard, label: "Dashboard" },
     { to: "/implantador/implantacoes", icon: ClipboardList, label: "Minhas Implantações" },
     { to: "/implantador/demandas", icon: FolderKanban, label: "Demandas" },
-    { to: "/implantador/visitas", icon: MessageSquare, label: "Visitas" },
-    { to: "/implantador/guia-visitas", icon: BookOpen, label: "Guia Visitas" },
+    {
+      type: "group",
+      icon: MessageSquare,
+      label: "Visitas",
+      children: [
+        { to: "/implantador/visitas", icon: MessageSquare, label: "Visitas" },
+        { to: "/implantador/guia-visitas", icon: BookOpen, label: "Guia Visitas" },
+      ],
+    },
     { to: "/implantador/relatorio-comissoes", icon: FileText, label: "Relatório" },
   ];
 
@@ -105,7 +119,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       {open && <div className="fixed inset-0 z-40 bg-foreground/50 md:hidden" onClick={onClose} />}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col transition-transform duration-300 md:relative md:translate-x-0 bg-[#a0181c]",
+          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col transition-transform duration-300 md:relative md:translate-x-0 md:h-full md:inset-y-auto bg-[#a0181c]",
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
