@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { Loader2, ArrowLeft, CalendarCheck } from "lucide-react";
 import { WebhookService } from "@/lib/webhookService";
 
 interface Implementer {
@@ -44,11 +44,26 @@ export default function NovaImplantacao() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
+  const prefilledAnalyst = searchParams.get("analyst");
+  const prefilledDate = searchParams.get("date");
+  const isPrefilled = Boolean(prefilledAnalyst && prefilledDate);
 
   useEffect(() => {
     fetchImplementers();
     fetchCommissionTypes();
   }, []);
+
+  // Apply query-param prefill once implementers are loaded
+  useEffect(() => {
+    if (prefilledDate && /^\d{4}-\d{2}-\d{2}$/.test(prefilledDate)) {
+      setStartDate(prefilledDate);
+    }
+    if (prefilledAnalyst && implementers.some((i) => i.user_id === prefilledAnalyst)) {
+      setSelectedImplementerIds([prefilledAnalyst]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [implementers, prefilledAnalyst, prefilledDate]);
 
   const fetchImplementers = async () => {
     try {
@@ -275,6 +290,14 @@ export default function NovaImplantacao() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {isPrefilled && (
+              <div className="mb-4 flex items-start gap-2 rounded-lg border border-primary/20 bg-primary/5 p-3 text-sm">
+                <CalendarCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                <span className="text-foreground">
+                  Pré-preenchido a partir do calendário de disponibilidade — analista e data já selecionados.
+                </span>
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="clientName">Nome do Cliente *</Label>

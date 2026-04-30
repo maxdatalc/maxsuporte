@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Loader2, ChevronLeft, ChevronRight, User, Clock, Briefcase } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Loader2, ChevronLeft, ChevronRight, User, Clock, Briefcase, Plus } from "lucide-react";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, addMonths, subMonths } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -51,6 +53,12 @@ export default function DisponibilidadeCalendario() {
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCreateImplantacao = (userId: string, date: Date) => {
+    setDialogOpen(false);
+    navigate(`/admin/implantacoes/nova?analyst=${userId}&date=${format(date, "yyyy-MM-dd")}`);
+  };
 
   useEffect(() => {
     fetchData();
@@ -371,7 +379,21 @@ export default function DisponibilidadeCalendario() {
                         className="rounded-lg border border-border p-3"
                       >
                         <div className="flex items-center justify-between">
-                          <h5 className="font-medium">{schedule.implementer.name}</h5>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  type="button"
+                                  onClick={() => selectedDate && handleCreateImplantacao(schedule.implementer.user_id, selectedDate)}
+                                  className="group flex items-center gap-1.5 font-medium hover:text-primary transition-colors"
+                                >
+                                  <span>{schedule.implementer.name}</span>
+                                  <Plus className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>Criar implantação para este analista neste dia</TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                           {schedule.totalMinutes > 0 && (
                             <Badge variant="secondary">
                               {formatTime(schedule.totalMinutes)}
@@ -440,14 +462,23 @@ export default function DisponibilidadeCalendario() {
                   </h4>
                   <div className="grid gap-2 md:grid-cols-2">
                     {freeImplementers.map((schedule) => (
-                      <div
-                        key={schedule.implementer.user_id}
-                        className="rounded-lg border border-green-200 bg-green-50 p-3 dark:border-green-900 dark:bg-green-950"
-                      >
-                        <span className="font-medium text-green-700 dark:text-green-300">
-                          {schedule.implementer.name}
-                        </span>
-                      </div>
+                      <TooltipProvider key={schedule.implementer.user_id}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
+                              type="button"
+                              onClick={() => selectedDate && handleCreateImplantacao(schedule.implementer.user_id, selectedDate)}
+                              className="group flex items-center justify-between rounded-lg border border-green-200 bg-green-50 p-3 text-left transition-colors hover:bg-green-100 dark:border-green-900 dark:bg-green-950 dark:hover:bg-green-900"
+                            >
+                              <span className="font-medium text-green-700 dark:text-green-300">
+                                {schedule.implementer.name}
+                              </span>
+                              <Plus className="h-4 w-4 text-green-700 opacity-0 group-hover:opacity-100 transition-opacity dark:text-green-300" />
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent>Criar implantação para este analista neste dia</TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
                     ))}
                   </div>
                 </div>
