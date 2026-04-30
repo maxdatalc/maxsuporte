@@ -93,6 +93,14 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       ],
     },
     { to: "/implantador/relatorio-comissoes", icon: FileText, label: "Relatório" },
+    {
+      type: "group",
+      icon: Settings,
+      label: "Configurações",
+      children: [
+        { to: "/implantador/perfil", icon: UserCircle, label: "Perfil" },
+      ],
+    },
   ];
 
   const items = role === "admin" ? adminItems : implantadorItems;
