@@ -53,6 +53,12 @@ export default function DisponibilidadeCalendario() {
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCreateImplantacao = (userId: string, date: Date) => {
+    setDialogOpen(false);
+    navigate(`/admin/implantacoes/nova?analyst=${userId}&date=${format(date, "yyyy-MM-dd")}`);
+  };
 
   useEffect(() => {
     fetchData();
