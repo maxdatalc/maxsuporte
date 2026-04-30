@@ -33,6 +33,7 @@ import DemandaDetalhe from "./pages/demandas/DemandaDetalhe";
 import RelatorioDemandas from "./pages/admin/RelatorioDemandas";
 import NotFound from "./pages/NotFound";
 import ResetPassword from "./pages/ResetPassword";
+import PerfilUsuario from "./pages/PerfilUsuario";
 
 const queryClient = new QueryClient();
 
@@ -95,6 +96,8 @@ function AppRoutes() {
       {/* Demand routes - Analista */}
       <Route path="/implantador/demandas" element={<ProtectedRoute allowedRoles={["implantador"]}><DemandasList /></ProtectedRoute>} />
       <Route path="/implantador/demandas/:id" element={<ProtectedRoute allowedRoles={["implantador"]}><DemandaDetalhe /></ProtectedRoute>} />
+      <Route path="/implantador/perfil" element={<ProtectedRoute allowedRoles={["implantador"]}><PerfilUsuario /></ProtectedRoute>} />
+      <Route path="/admin/perfil" element={<ProtectedRoute allowedRoles={["admin"]}><PerfilUsuario /></ProtectedRoute>} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>

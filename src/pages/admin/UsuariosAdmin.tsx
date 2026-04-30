@@ -8,6 +8,7 @@ import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2, UserCheck, UserX, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getRoleLabel, MODULE_LABELS, ALL_MODULES } from "@/lib/roleLabels";
 import {
   Dialog,
@@ -25,6 +26,7 @@ interface UserWithRole {
   role: string;
   is_active: boolean;
   created_at: string;
+  avatar_url: string | null;
 }
 
 interface ModulePermission {
@@ -49,7 +51,7 @@ export default function UsuariosAdmin() {
     try {
       const { data: profiles } = await supabase
         .from("profiles")
-        .select("id, user_id, name, email, is_active, created_at");
+        .select("id, user_id, name, email, is_active, created_at, avatar_url");
 
       if (profiles) {
         const userIds = profiles.map((p) => p.user_id);
@@ -68,6 +70,7 @@ export default function UsuariosAdmin() {
           role: rolesMap.get(p.user_id) || "implantador",
           is_active: p.is_active ?? true,
           created_at: p.created_at,
+          avatar_url: (p as any).avatar_url ?? null,
         }));
 
         setUsers(usersWithRoles);
@@ -235,13 +238,18 @@ export default function UsuariosAdmin() {
                     }`}
                   >
                     <div className="flex items-center gap-4">
-                      <div
-                        className={`h-10 w-10 rounded-full flex items-center justify-center ${
-                          user.is_active ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"
-                        }`}
-                      >
-                        {user.is_active ? <UserCheck className="h-5 w-5" /> : <UserX className="h-5 w-5" />}
-                      </div>
+                      <Avatar className="h-10 w-10">
+                        {user.avatar_url && <AvatarImage src={user.avatar_url} alt={user.name} />}
+                        <AvatarFallback
+                          className={
+                            user.is_active
+                              ? "bg-primary/10 text-primary"
+                              : "bg-destructive/10 text-destructive"
+                          }
+                        >
+                          {user.is_active ? <UserCheck className="h-5 w-5" /> : <UserX className="h-5 w-5" />}
+                        </AvatarFallback>
+                      </Avatar>
                       <div>
                         <h3 className="font-medium text-foreground">{user.name}</h3>
                         <p className="text-sm text-muted-foreground">{user.email}</p>

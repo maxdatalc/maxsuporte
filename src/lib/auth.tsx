@@ -9,9 +9,10 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   role: AppRole | null;
-  profile: { id: string; name: string; email: string } | null;
+  profile: { id: string; name: string; email: string; avatar_url?: string | null } | null;
   loading: boolean;
   signOut: () => Promise<void>;
+  refreshProfile: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,7 +21,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [role, setRole] = useState<AppRole | null>(null);
-  const [profile, setProfile] = useState<{ id: string; name: string; email: string } | null>(null);
+  const [profile, setProfile] = useState<{ id: string; name: string; email: string; avatar_url?: string | null } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +46,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
             const { data: profileData } = await supabase
               .from("profiles")
-              .select("id, name, email")
+              .select("id, name, email, avatar_url")
               .eq("user_id", session.user.id)
               .maybeSingle();
 
@@ -76,7 +77,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             .maybeSingle(),
           supabase
             .from("profiles")
-            .select("id, name, email")
+            .select("id, name, email, avatar_url")
             .eq("user_id", session.user.id)
             .maybeSingle(),
         ]).then(([roleResult, profileResult]) => {
@@ -104,8 +105,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile(null);
   };
 
+  const refreshProfile = async () => {
+    if (!user) return;
+    const { data } = await supabase
+      .from("profiles")
+      .select("id, name, email, avatar_url")
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (data) setProfile(data);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, session, role, profile, loading, signOut }}>
+    <AuthContext.Provider value={{ user, session, role, profile, loading, signOut, refreshProfile }}>
       {children}
     </AuthContext.Provider>
   );
