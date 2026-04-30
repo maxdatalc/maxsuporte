@@ -240,13 +240,18 @@ export default function UsuariosAdmin() {
                     }`}
                   >
                     <div className="flex items-center gap-4">
-                      <div
-                        className={`h-10 w-10 rounded-full flex items-center justify-center ${
-                          user.is_active ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"
-                        }`}
-                      >
-                        {user.is_active ? <UserCheck className="h-5 w-5" /> : <UserX className="h-5 w-5" />}
-                      </div>
+                      <Avatar className="h-10 w-10">
+                        {user.avatar_url && <AvatarImage src={user.avatar_url} alt={user.name} />}
+                        <AvatarFallback
+                          className={
+                            user.is_active
+                              ? "bg-primary/10 text-primary"
+                              : "bg-destructive/10 text-destructive"
+                          }
+                        >
+                          {user.is_active ? <UserCheck className="h-5 w-5" /> : <UserX className="h-5 w-5" />}
+                        </AvatarFallback>
+                      </Avatar>
                       <div>
                         <h3 className="font-medium text-foreground">{user.name}</h3>
                         <p className="text-sm text-muted-foreground">{user.email}</p>
