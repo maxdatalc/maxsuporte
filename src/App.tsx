@@ -33,6 +33,7 @@ import DemandaDetalhe from "./pages/demandas/DemandaDetalhe";
 import RelatorioDemandas from "./pages/admin/RelatorioDemandas";
 import NotFound from "./pages/NotFound";
 import ResetPassword from "./pages/ResetPassword";
+import PerfilUsuario from "./pages/PerfilUsuario";
 
 const queryClient = new QueryClient();
 
