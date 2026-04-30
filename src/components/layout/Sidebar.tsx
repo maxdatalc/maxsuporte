@@ -119,7 +119,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       {open && <div className="fixed inset-0 z-40 bg-foreground/50 md:hidden" onClick={onClose} />}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col transition-transform duration-300 md:relative md:translate-x-0 bg-[#a0181c]",
+          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col transition-transform duration-300 md:relative md:translate-x-0 md:h-full md:inset-y-auto bg-[#a0181c]",
           open ? "translate-x-0" : "-translate-x-full"
         )}
       >
