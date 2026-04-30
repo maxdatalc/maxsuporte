@@ -379,7 +379,21 @@ export default function DisponibilidadeCalendario() {
                         className="rounded-lg border border-border p-3"
                       >
                         <div className="flex items-center justify-between">
-                          <h5 className="font-medium">{schedule.implementer.name}</h5>
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <button
+                                  type="button"
+                                  onClick={() => selectedDate && handleCreateImplantacao(schedule.implementer.user_id, selectedDate)}
+                                  className="group flex items-center gap-1.5 font-medium hover:text-primary transition-colors"
+                                >
+                                  <span>{schedule.implementer.name}</span>
+                                  <Plus className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent>Criar implantação para este analista neste dia</TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
                           {schedule.totalMinutes > 0 && (
                             <Badge variant="secondary">
                               {formatTime(schedule.totalMinutes)}
