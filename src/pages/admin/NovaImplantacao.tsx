@@ -44,11 +44,26 @@ export default function NovaImplantacao() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
+  const prefilledAnalyst = searchParams.get("analyst");
+  const prefilledDate = searchParams.get("date");
+  const isPrefilled = Boolean(prefilledAnalyst && prefilledDate);
 
   useEffect(() => {
     fetchImplementers();
     fetchCommissionTypes();
   }, []);
+
+  // Apply query-param prefill once implementers are loaded
+  useEffect(() => {
+    if (prefilledDate && /^\d{4}-\d{2}-\d{2}$/.test(prefilledDate)) {
+      setStartDate(prefilledDate);
+    }
+    if (prefilledAnalyst && implementers.some((i) => i.user_id === prefilledAnalyst)) {
+      setSelectedImplementerIds([prefilledAnalyst]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [implementers, prefilledAnalyst, prefilledDate]);
 
   const fetchImplementers = async () => {
     try {
