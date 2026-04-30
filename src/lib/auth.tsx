@@ -21,7 +21,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [role, setRole] = useState<AppRole | null>(null);
-  const [profile, setProfile] = useState<{ id: string; name: string; email: string } | null>(null);
+  const [profile, setProfile] = useState<{ id: string; name: string; email: string; avatar_url?: string | null } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
