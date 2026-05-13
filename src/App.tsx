@@ -99,6 +99,7 @@ function AppRoutes() {
       <Route path="/implantador/demandas/:id" element={<ProtectedRoute allowedRoles={["implantador"]}><DemandaDetalhe /></ProtectedRoute>} />
       <Route path="/implantador/perfil" element={<ProtectedRoute allowedRoles={["implantador"]}><PerfilUsuario /></ProtectedRoute>} />
       <Route path="/admin/perfil" element={<ProtectedRoute allowedRoles={["admin"]}><PerfilUsuario /></ProtectedRoute>} />
+      <Route path="/admin/backup" element={<ProtectedRoute allowedRoles={["admin"]}><BackupRestore /></ProtectedRoute>} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>
