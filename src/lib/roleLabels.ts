@@ -18,6 +18,7 @@ export const MODULE_LABELS: Record<string, string> = {
   demandas: "Demandas",
   relatorios: "Relatórios",
   administracao: "Administração",
+  crm: "CRM / Vendas",
 };
 
 export const ALL_MODULES = Object.keys(MODULE_LABELS);
