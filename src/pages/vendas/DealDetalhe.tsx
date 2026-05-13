@@ -204,10 +204,23 @@ export default function DealDetalhe() {
             <div>
               <h1 className="text-xl font-bold">{deal.nome_negocio}</h1>
               <p className="text-sm text-muted-foreground">{deal.lead?.nome}{deal.lead?.empresa ? ` — ${deal.lead.empresa}` : ""}</p>
-              <div className="mt-2 flex gap-2">
+              <div className="mt-2 flex flex-wrap items-center gap-2">
                 <Badge>{STAGE_LABELS[deal.etapa as keyof typeof STAGE_LABELS]}</Badge>
                 <Badge variant="outline">{deal.status}</Badge>
-                {deal.formulario_preenchido && <Badge variant="secondary">Formulário OK</Badge>}
+                {deal.formulario_preenchido ? (
+                  <Badge variant="secondary" className="gap-1">
+                    <CheckCircle2 className="h-3 w-3" />
+                    {form?.submission_origin === "publico" ? "Formulário enviado pelo lead" : "Formulário preenchido"}
+                  </Badge>
+                ) : (
+                  <Badge variant="outline" className="border-dashed text-muted-foreground">Formulário pendente</Badge>
+                )}
+                {form?.created_at && deal.formulario_preenchido && (
+                  <span className="text-xs text-muted-foreground">
+                    {form?.submission_origin === "publico" ? "Enviado em " : "Atualizado em "}
+                    {new Date(form.updated_at || form.created_at).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" })}
+                  </span>
+                )}
               </div>
             </div>
             <div className="flex items-center gap-2">
