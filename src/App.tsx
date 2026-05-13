@@ -34,6 +34,7 @@ import RelatorioDemandas from "./pages/admin/RelatorioDemandas";
 import NotFound from "./pages/NotFound";
 import ResetPassword from "./pages/ResetPassword";
 import PerfilUsuario from "./pages/PerfilUsuario";
+import BackupRestore from "./pages/admin/BackupRestore";
 
 const queryClient = new QueryClient();
 
