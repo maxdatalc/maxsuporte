@@ -75,6 +75,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         { to: "/admin/base-conhecimento", icon: Brain, label: "Base Conhecimento IA" },
         { to: "/admin/demandas/modelos", icon: ListChecks, label: "Modelos POP" },
         { to: "/admin/perfil", icon: UserCircle, label: "Meu Perfil" },
+        { to: "/admin/backup", icon: DatabaseBackup, label: "Backup & Restauração" },
       ],
     },
   ];
