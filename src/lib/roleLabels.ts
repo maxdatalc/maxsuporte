@@ -5,6 +5,8 @@ export function getRoleLabel(role: string): string {
       return "Administrador";
     case "implantador":
       return "Analista";
+    case "vendedor":
+      return "Vendedor";
     default:
       return role;
   }
