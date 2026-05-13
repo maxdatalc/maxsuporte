@@ -35,6 +35,12 @@ import NotFound from "./pages/NotFound";
 import ResetPassword from "./pages/ResetPassword";
 import PerfilUsuario from "./pages/PerfilUsuario";
 import BackupRestore from "./pages/admin/BackupRestore";
+import VendasDashboard from "./pages/vendas/VendasDashboard";
+import LeadsList from "./pages/vendas/LeadsList";
+import PipelineKanban from "./pages/vendas/PipelineKanban";
+import DealDetalhe from "./pages/vendas/DealDetalhe";
+import ConfiguracoesCRM from "./pages/vendas/ConfiguracoesCRM";
+import FormularioPublico from "./pages/vendas/FormularioPublico";
 
 const queryClient = new QueryClient();
 
@@ -52,10 +58,19 @@ function AppRoutes() {
   return (
     <Routes>
       {/* Public routes */}
-      <Route path="/login" element={user ? <Navigate to={role === "admin" ? "/admin" : "/implantador"} replace /> : <Login />} />
+      <Route path="/login" element={user ? <Navigate to={role === "admin" ? "/admin" : role === "vendedor" ? "/vendas" : "/implantador"} replace /> : <Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/cadastro" element={user ? <Navigate to={role === "admin" ? "/admin" : "/implantador"} replace /> : <Cadastro />} />
-      <Route path="/" element={user ? <Navigate to={role === "admin" ? "/admin" : "/implantador"} replace /> : <Navigate to="/login" replace />} />
+      <Route path="/cadastro" element={user ? <Navigate to={role === "admin" ? "/admin" : role === "vendedor" ? "/vendas" : "/implantador"} replace /> : <Cadastro />} />
+      <Route path="/formulario/:dealId/:token" element={<FormularioPublico />} />
+      <Route path="/" element={user ? <Navigate to={role === "admin" ? "/admin" : role === "vendedor" ? "/vendas" : "/implantador"} replace /> : <Navigate to="/login" replace />} />
+
+      {/* CRM / Vendas */}
+      <Route path="/vendas" element={<ProtectedRoute allowedRoles={["admin", "vendedor"]}><VendasDashboard /></ProtectedRoute>} />
+      <Route path="/vendas/leads" element={<ProtectedRoute allowedRoles={["admin", "vendedor"]}><LeadsList /></ProtectedRoute>} />
+      <Route path="/vendas/pipeline" element={<ProtectedRoute allowedRoles={["admin", "vendedor"]}><PipelineKanban /></ProtectedRoute>} />
+      <Route path="/vendas/deals/:id" element={<ProtectedRoute allowedRoles={["admin", "vendedor"]}><DealDetalhe /></ProtectedRoute>} />
+      <Route path="/vendas/configuracoes" element={<ProtectedRoute allowedRoles={["admin"]}><ConfiguracoesCRM /></ProtectedRoute>} />
+      <Route path="/vendas/perfil" element={<ProtectedRoute allowedRoles={["vendedor"]}><PerfilUsuario /></ProtectedRoute>} />
 
       {/* Admin routes */}
       <Route path="/admin" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />
