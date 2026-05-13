@@ -34,6 +34,7 @@ import RelatorioDemandas from "./pages/admin/RelatorioDemandas";
 import NotFound from "./pages/NotFound";
 import ResetPassword from "./pages/ResetPassword";
 import PerfilUsuario from "./pages/PerfilUsuario";
+import BackupRestore from "./pages/admin/BackupRestore";
 
 const queryClient = new QueryClient();
 
@@ -98,6 +99,7 @@ function AppRoutes() {
       <Route path="/implantador/demandas/:id" element={<ProtectedRoute allowedRoles={["implantador"]}><DemandaDetalhe /></ProtectedRoute>} />
       <Route path="/implantador/perfil" element={<ProtectedRoute allowedRoles={["implantador"]}><PerfilUsuario /></ProtectedRoute>} />
       <Route path="/admin/perfil" element={<ProtectedRoute allowedRoles={["admin"]}><PerfilUsuario /></ProtectedRoute>} />
+      <Route path="/admin/backup" element={<ProtectedRoute allowedRoles={["admin"]}><BackupRestore /></ProtectedRoute>} />
 
       <Route path="*" element={<NotFound />} />
     </Routes>
