@@ -74,7 +74,20 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         { to: "/vendas", icon: LayoutDashboard, label: "Dashboard Vendas" },
         { to: "/vendas/leads", icon: Target, label: "Leads" },
         { to: "/vendas/pipeline", icon: KanbanSquare, label: "Pipeline" },
-        { to: "/vendas/configuracoes", icon: Settings, label: "Config. CRM" },
+        { to: "/vendas/configuracoes", icon: FileSignature, label: "Config. CRM" },
+      ],
+    },
+    {
+      type: "group",
+      icon: Settings,
+      label: "Configurações",
+      children: [
+        { to: "/admin/usuarios", icon: Users, label: "Gestão de Usuários" },
+        { to: "/admin/comissoes", icon: DollarSign, label: "Comissões" },
+        { to: "/admin/base-conhecimento", icon: Brain, label: "Base Conhecimento IA" },
+        { to: "/admin/demandas/modelos", icon: ListChecks, label: "Modelos POP" },
+        { to: "/admin/perfil", icon: UserCircle, label: "Meu Perfil" },
+        { to: "/admin/backup", icon: DatabaseBackup, label: "Backup & Restauração" },
       ],
     },
   ];
@@ -117,7 +130,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     },
   ];
 
-  const items = role === "admin" ? adminItems : implantadorItems;
+  const items = role === "admin" ? adminItems : role === "vendedor" ? vendedorItems : implantadorItems;
 
   // Auto-expand groups that contain the active route
   const getInitialExpanded = () => {
