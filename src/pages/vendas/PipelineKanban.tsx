@@ -134,23 +134,47 @@ export default function PipelineKanban() {
             <h1 className="text-2xl font-bold">Pipeline</h1>
             <p className="text-sm text-muted-foreground">Arraste os negócios entre as etapas</p>
           </div>
-          <Dialog open={open} onOpenChange={setOpen}>
+          <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) resetForm(); }}>
             <DialogTrigger asChild><Button><Plus className="mr-2 h-4 w-4" />Novo Negócio</Button></DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-w-lg">
               <DialogHeader><DialogTitle>Novo Negócio</DialogTitle></DialogHeader>
-              <div className="space-y-3">
-                <div><Label>Lead *</Label>
-                  <Select value={form.lead_id} onValueChange={(v) => setForm({ ...form, lead_id: v })}>
-                    <SelectTrigger><SelectValue placeholder="Selecione" /></SelectTrigger>
-                    <SelectContent>{leads.map((l) => <SelectItem key={l.id} value={l.id}>{l.nome}{l.empresa ? ` — ${l.empresa}` : ""}</SelectItem>)}</SelectContent>
-                  </Select>
-                </div>
+              <Tabs value={tab} onValueChange={(v) => setTab(v as any)}>
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="existente">Lead existente</TabsTrigger>
+                  <TabsTrigger value="novo">Cadastrar novo lead</TabsTrigger>
+                </TabsList>
+                <TabsContent value="existente" className="space-y-3 pt-3">
+                  <div>
+                    <Label>Lead *</Label>
+                    <Select value={form.lead_id} onValueChange={(v) => setForm({ ...form, lead_id: v })}>
+                      <SelectTrigger><SelectValue placeholder={leads.length ? "Selecione" : "Nenhum lead cadastrado"} /></SelectTrigger>
+                      <SelectContent>{leads.map((l) => <SelectItem key={l.id} value={l.id}>{l.nome}{l.empresa ? ` — ${l.empresa}` : ""}</SelectItem>)}</SelectContent>
+                    </Select>
+                  </div>
+                </TabsContent>
+                <TabsContent value="novo" className="space-y-3 pt-3">
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <div className="sm:col-span-2"><Label>Nome *</Label><Input value={newLead.nome} onChange={(e) => setNewLead({ ...newLead, nome: e.target.value })} /></div>
+                    <div><Label>Telefone *</Label><Input value={newLead.telefone} onChange={(e) => setNewLead({ ...newLead, telefone: maskPhone(e.target.value) })} /></div>
+                    <div><Label>Email</Label><Input type="email" value={newLead.email} onChange={(e) => setNewLead({ ...newLead, email: e.target.value })} /></div>
+                    <div><Label>Empresa</Label><Input value={newLead.empresa} onChange={(e) => setNewLead({ ...newLead, empresa: e.target.value })} /></div>
+                    <div><Label>Origem</Label><Input value={newLead.origem} onChange={(e) => setNewLead({ ...newLead, origem: e.target.value })} placeholder="Ex.: Indicação, Site" /></div>
+                    <div className="sm:col-span-2"><Label>Observações</Label><Textarea rows={2} value={newLead.observacoes} onChange={(e) => setNewLead({ ...newLead, observacoes: e.target.value })} /></div>
+                  </div>
+                </TabsContent>
+              </Tabs>
+
+              <div className="space-y-3 border-t pt-3">
                 <div><Label>Nome do negócio *</Label><Input value={form.nome_negocio} onChange={(e) => setForm({ ...form, nome_negocio: e.target.value })} /></div>
                 <div><Label>Valor estimado</Label><Input type="number" step="0.01" value={form.valor_estimado} onChange={(e) => setForm({ ...form, valor_estimado: e.target.value })} /></div>
               </div>
+
               <DialogFooter>
-                <Button variant="outline" onClick={() => setOpen(false)}>Cancelar</Button>
-                <Button onClick={handleCreate}>Criar</Button>
+                <Button variant="outline" onClick={() => setOpen(false)} disabled={saving}>Cancelar</Button>
+                <Button onClick={handleCreate} disabled={saving}>
+                  {saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {tab === "novo" ? "Cadastrar lead e criar negócio" : "Criar"}
+                </Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
