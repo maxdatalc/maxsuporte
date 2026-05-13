@@ -3,7 +3,7 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Download, Upload, Loader2, AlertTriangle, Database } from "lucide-react";
+import { Download, Upload, Loader2, AlertTriangle, Database, Users } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -39,11 +39,41 @@ const TABLES = [
   "webhook_logs",
 ] as const;
 
+// Colunas que referenciam auth.users.id (user_id) e devem ser remapeadas
+// table -> array de campos
+const USER_FK_COLUMNS: Record<string, string[]> = {
+  profiles: ["user_id"],
+  user_roles: ["user_id"],
+  user_module_permissions: ["user_id"],
+  clients: ["created_by"],
+  commission_rules: ["created_by"],
+  commission_types: ["created_by"],
+  demand_templates: ["created_by"],
+  base_conhecimento_ia: ["created_by"],
+  implementations: ["implementer_id", "created_by"],
+  implementation_analysts: ["analyst_id"],
+  implementation_commissions: ["created_by"],
+  episodes: ["created_by"],
+  conclusion_requests: ["requester_id", "approved_by"],
+  demands: ["created_by"],
+  demand_analysts: ["analyst_id"],
+  demand_steps: ["completed_by"],
+  demand_step_evidences: ["uploaded_by"],
+  visitas: ["analista_id"],
+  visita_interacoes: ["usuario_id"],
+  ia_recommendations: ["created_by"],
+  ia_recommendation_versions: ["edited_by"],
+  ia_feedback: ["user_id"],
+  ia_training_dataset: ["validated_by"],
+  episode_audit_logs: ["edited_by"],
+};
+
 export default function BackupRestore() {
   const { toast } = useToast();
   const [exporting, setExporting] = useState(false);
   const [importing, setImporting] = useState(false);
   const [progress, setProgress] = useState<string>("");
+  const [remapStats, setRemapStats] = useState<{ matched: number; missing: string[] } | null>(null);
 
   const handleExport = async () => {
     setExporting(true);
@@ -73,7 +103,7 @@ export default function BackupRestore() {
       }
 
       const payload = {
-        version: 1,
+        version: 2,
         exported_at: new Date().toISOString(),
         source_project: import.meta.env.VITE_SUPABASE_PROJECT_ID,
         tables: backup,
@@ -98,20 +128,127 @@ export default function BackupRestore() {
     }
   };
 
+  /**
+   * Constrói o mapa user_id_antigo -> user_id_novo cruzando emails do
+   * profiles antigo (no backup) com o profiles atual deste projeto.
+   */
+  const buildUserIdMap = async (
+    backupProfiles: any[]
+  ): Promise<{ map: Map<string, string>; missing: string[] }> => {
+    const map = new Map<string, string>();
+    const missing: string[] = [];
+
+    const { data: currentProfiles, error } = await supabase
+      .from("profiles")
+      .select("user_id, email");
+
+    if (error) throw new Error(`Falha ao ler profiles atuais: ${error.message}`);
+
+    const emailToNewId = new Map<string, string>();
+    (currentProfiles || []).forEach((p: any) => {
+      if (p.email) emailToNewId.set(p.email.toLowerCase().trim(), p.user_id);
+    });
+
+    for (const oldP of backupProfiles) {
+      const email = (oldP.email || "").toLowerCase().trim();
+      const newId = email ? emailToNewId.get(email) : undefined;
+      if (newId && oldP.user_id) {
+        map.set(oldP.user_id, newId);
+      } else {
+        missing.push(oldP.email || oldP.user_id);
+      }
+    }
+
+    return { map, missing };
+  };
+
+  /**
+   * Aplica o remapeamento user_id_antigo -> user_id_novo em todas as
+   * colunas referenciando usuário, em todas as tabelas do backup.
+   * Também atualiza o `id` do registro em `profiles` (que aponta para o user antigo)
+   * para que `profiles.user_id` reflita o novo usuário do auth.
+   */
+  const remapUserIds = (
+    tables: Record<string, any[]>,
+    userMap: Map<string, string>
+  ) => {
+    for (const [tableName, rows] of Object.entries(tables)) {
+      const fkCols = USER_FK_COLUMNS[tableName];
+      if (!fkCols || !Array.isArray(rows)) continue;
+      for (const row of rows) {
+        for (const col of fkCols) {
+          const oldVal = row[col];
+          if (oldVal && userMap.has(oldVal)) {
+            row[col] = userMap.get(oldVal);
+          }
+        }
+      }
+    }
+  };
+
   const handleImport = async (file: File) => {
     if (!confirm(
-      "ATENÇÃO: A restauração irá INSERIR os dados do backup neste projeto.\n\n" +
-      "Recomendado: use em um projeto NOVO (vazio).\n\n" +
-      "Registros com IDs já existentes serão ignorados (conflito).\n\n" +
+      "ATENÇÃO: A restauração irá inserir os dados deste backup no projeto atual.\n\n" +
+      "IMPORTANTE: Cadastre primeiro TODOS os usuários no novo projeto com os MESMOS e-mails do projeto antigo.\n\n" +
+      "O sistema fará o remapeamento automático: e-mail antigo -> novo user_id.\n\n" +
+      "Registros com IDs já existentes serão ignorados.\n\n" +
       "Deseja continuar?"
     )) return;
 
     setImporting(true);
     setProgress("");
+    setRemapStats(null);
     try {
       const text = await file.text();
       const parsed = JSON.parse(text);
-      const tables = parsed.tables || parsed;
+      const tables: Record<string, any[]> = parsed.tables || parsed;
+
+      // 1. Construir mapa de remapeamento de usuários
+      setProgress("Cruzando e-mails para remapear usuários...");
+      const backupProfiles = tables["profiles"] || [];
+      const { map: userMap, missing } = await buildUserIdMap(backupProfiles);
+
+      setRemapStats({ matched: userMap.size, missing });
+
+      if (userMap.size === 0 && backupProfiles.length > 0) {
+        if (!confirm(
+          "Nenhum e-mail do backup foi encontrado entre os usuários atuais.\n\n" +
+          "Isso significa que NENHUMA implantação/demanda/comissão será vinculada a um analista.\n\n" +
+          "Recomendado: cancele, cadastre os usuários com os mesmos e-mails e tente novamente.\n\n" +
+          "Deseja continuar mesmo assim?"
+        )) {
+          setImporting(false);
+          setProgress("");
+          return;
+        }
+      }
+
+      // 2. Aplicar remapeamento em todas as tabelas
+      setProgress(`Remapeando ${userMap.size} usuários em todas as tabelas...`);
+      remapUserIds(tables, userMap);
+
+      // 3. Tratamento especial: profiles
+      // O `id` (PK) do profile antigo pode ser irrelevante; o que importa é user_id.
+      // Se um profile com mesmo user_id (novo) já existe, o upsert por id-conflict pulará.
+      // Forçamos remoção do `id` para deixar gen_random_uuid() criar novo, evitando
+      // colisão com profiles já criados pelo trigger handle_new_user.
+      if (tables["profiles"]) {
+        tables["profiles"] = tables["profiles"]
+          .filter((p) => userMap.has(Object.keys(userMap).length ? p.user_id || "" : ""))
+          .map((p) => {
+            const { id, ...rest } = p;
+            return rest;
+          });
+      }
+      // user_roles: idem, deixa o id ser regenerado e só importa quem foi remapeado
+      if (tables["user_roles"]) {
+        tables["user_roles"] = tables["user_roles"]
+          .filter((r) => userMap.has(r.user_id) || !backupProfiles.length)
+          .map((r) => {
+            const { id, ...rest } = r;
+            return rest;
+          });
+      }
 
       let totalInserted = 0;
       const errors: string[] = [];
@@ -121,13 +258,16 @@ export default function BackupRestore() {
         if (!rows || !Array.isArray(rows) || rows.length === 0) continue;
         setProgress(`Restaurando: ${table} (${rows.length} registros)...`);
 
-        // Insere em lotes para não estourar limites
         const batchSize = 500;
         for (let i = 0; i < rows.length; i += batchSize) {
           const batch = rows.slice(i, i + batchSize);
-          const { error, count } = await (supabase as any)
-            .from(table)
-            .upsert(batch, { onConflict: "id", ignoreDuplicates: true, count: "exact" });
+          // profiles e user_roles sem id -> insert simples ignorando duplicados via try/catch por linha não vale a pena;
+          // usamos upsert quando há id
+          const hasId = batch[0] && "id" in batch[0];
+          const query = hasId
+            ? (supabase as any).from(table).upsert(batch, { onConflict: "id", ignoreDuplicates: true, count: "exact" })
+            : (supabase as any).from(table).insert(batch, { count: "exact" });
+          const { error, count } = await query;
           if (error) {
             errors.push(`${table}: ${error.message}`);
             console.error(`Erro em ${table}:`, error);
@@ -141,10 +281,13 @@ export default function BackupRestore() {
         toast({
           variant: "destructive",
           title: "Restauração concluída com avisos",
-          description: `${totalInserted} registros restaurados. ${errors.length} tabelas com erros (veja console).`,
+          description: `${totalInserted} registros restaurados. ${errors.length} erros (veja console).`,
         });
       } else {
-        toast({ title: "Restauração concluída!", description: `${totalInserted} registros importados.` });
+        toast({
+          title: "Restauração concluída!",
+          description: `${totalInserted} registros importados. ${userMap.size} usuários remapeados.`,
+        });
       }
     } catch (e: any) {
       toast({ variant: "destructive", title: "Erro na restauração", description: e.message });
@@ -164,19 +307,17 @@ export default function BackupRestore() {
 
         <Alert>
           <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Importante sobre o remix</AlertTitle>
+          <AlertTitle>Como funciona o remix com remapeamento automático</AlertTitle>
           <AlertDescription className="space-y-2">
-            <p>
-              Este backup inclui todos os dados das tabelas, mas <strong>NÃO inclui usuários de autenticação</strong>{" "}
-              (auth). Após o remix, você precisará:
-            </p>
             <ol className="ml-4 list-decimal space-y-1 text-sm">
-              <li>Criar manualmente os usuários no novo projeto (com os mesmos e-mails)</li>
-              <li>Atualizar os <code>user_id</code> nas tabelas <code>profiles</code> e <code>user_roles</code> se necessário</li>
-              <li>Ou ignorar tabelas de usuários e cadastrar tudo do zero</li>
+              <li>Faça o <strong>backup</strong> neste projeto (gera o JSON).</li>
+              <li>Faça o <strong>remix</strong> e abra o novo projeto.</li>
+              <li>No projeto novo, <strong>cadastre todos os usuários com os MESMOS e-mails</strong> do projeto antigo (qualquer senha).</li>
+              <li>Volte aqui (Backup) no projeto novo e importe o JSON.</li>
+              <li>O sistema cruza os e-mails e <strong>remapeia automaticamente</strong> todos os IDs de usuário em implantações, demandas, comissões, episódios, visitas, etc.</li>
             </ol>
             <p className="text-sm">
-              Arquivos de storage (avatares, evidências) também precisam ser migrados separadamente.
+              Arquivos de storage (avatares, evidências) precisam ser migrados separadamente.
             </p>
           </AlertDescription>
         </Alert>
@@ -217,10 +358,10 @@ export default function BackupRestore() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Upload className="h-5 w-5 text-primary" />
-                Restauração Completa
+                Restauração com Remapeamento
               </CardTitle>
               <CardDescription>
-                Carrega um arquivo de backup JSON gerado anteriormente
+                Importa o JSON e remapeia usuários por e-mail automaticamente
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -264,6 +405,35 @@ export default function BackupRestore() {
             <CardContent className="flex items-center gap-3 py-4">
               <Loader2 className="h-4 w-4 animate-spin text-primary" />
               <span className="text-sm text-muted-foreground">{progress}</span>
+            </CardContent>
+          </Card>
+        )}
+
+        {remapStats && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <Users className="h-4 w-4 text-primary" />
+                Resultado do remapeamento de usuários
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2 text-sm">
+              <p>
+                <strong>{remapStats.matched}</strong> usuário(s) remapeado(s) com sucesso (e-mails encontrados no projeto atual).
+              </p>
+              {remapStats.missing.length > 0 && (
+                <div>
+                  <p className="text-destructive font-medium">
+                    {remapStats.missing.length} usuário(s) NÃO encontrado(s) — registros vinculados a eles continuarão órfãos:
+                  </p>
+                  <ul className="ml-4 list-disc text-muted-foreground">
+                    {remapStats.missing.slice(0, 20).map((m, i) => (
+                      <li key={i}>{m}</li>
+                    ))}
+                    {remapStats.missing.length > 20 && <li>... e mais {remapStats.missing.length - 20}</li>}
+                  </ul>
+                </div>
+              )}
             </CardContent>
           </Card>
         )}
