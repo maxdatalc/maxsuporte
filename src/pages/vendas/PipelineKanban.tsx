@@ -35,6 +35,9 @@ export default function PipelineKanban() {
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ lead_id: "", nome_negocio: "", valor_estimado: "" });
+  const [tab, setTab] = useState<"existente" | "novo">("existente");
+  const [newLead, setNewLead] = useState({ nome: "", telefone: "", email: "", empresa: "", origem: "", observacoes: "" });
+  const [saving, setSaving] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
 
   useEffect(() => { fetchData(); }, []);
@@ -50,17 +53,53 @@ export default function PipelineKanban() {
     setLoading(false);
   }
 
+  function resetForm() {
+    setForm({ lead_id: "", nome_negocio: "", valor_estimado: "" });
+    setNewLead({ nome: "", telefone: "", email: "", empresa: "", origem: "", observacoes: "" });
+    setTab("existente");
+  }
+
   async function handleCreate() {
-    if (!form.lead_id || !form.nome_negocio.trim()) {
-      toast({ variant: "destructive", title: "Lead e nome do negócio são obrigatórios" }); return;
+    if (!form.nome_negocio.trim()) {
+      toast({ variant: "destructive", title: "Informe o nome do negócio" }); return;
     }
-    const { error } = await supabase.from("deals").insert([{
-      lead_id: form.lead_id, nome_negocio: form.nome_negocio,
-      valor_estimado: Number(form.valor_estimado || 0), vendedor_id: user!.id,
-    }]);
-    if (error) { toast({ variant: "destructive", title: "Erro", description: error.message }); return; }
-    toast({ title: "Negócio criado" }); setOpen(false); setForm({ lead_id: "", nome_negocio: "", valor_estimado: "" });
-    fetchData();
+    setSaving(true);
+    try {
+      let leadId = form.lead_id;
+
+      if (tab === "novo") {
+        if (!newLead.nome.trim() || !newLead.telefone.trim()) {
+          toast({ variant: "destructive", title: "Nome e telefone do lead são obrigatórios" });
+          setSaving(false); return;
+        }
+        const { data: created, error: leadErr } = await supabase.from("leads").insert([{
+          nome: newLead.nome.trim(),
+          telefone: newLead.telefone.trim(),
+          email: newLead.email.trim() || null,
+          empresa: newLead.empresa.trim() || null,
+          origem: newLead.origem.trim() || null,
+          observacoes: newLead.observacoes.trim() || null,
+          created_by: user!.id,
+        }]).select("id").single();
+        if (leadErr) throw leadErr;
+        leadId = created.id;
+      } else if (!leadId) {
+        toast({ variant: "destructive", title: "Selecione um lead" });
+        setSaving(false); return;
+      }
+
+      const { error } = await supabase.from("deals").insert([{
+        lead_id: leadId, nome_negocio: form.nome_negocio,
+        valor_estimado: Number(form.valor_estimado || 0), vendedor_id: user!.id,
+      }]);
+      if (error) throw error;
+      toast({ title: "Negócio criado" });
+      setOpen(false); resetForm(); fetchData();
+    } catch (err: any) {
+      toast({ variant: "destructive", title: "Erro", description: err.message });
+    } finally {
+      setSaving(false);
+    }
   }
 
   async function onDragEnd(e: DragEndEvent) {
