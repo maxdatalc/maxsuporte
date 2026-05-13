@@ -250,6 +250,306 @@ export type Database = {
           },
         ]
       }
+      crm_settings: {
+        Row: {
+          contrato_instrucoes_padrao: string | null
+          cor_primaria: string | null
+          footer_html: string | null
+          header_html: string | null
+          id: string
+          logo_url: string | null
+          proposta_template_html: string | null
+          singleton: boolean
+          texto_condicoes_comerciais_padrao: string | null
+          texto_observacoes_padrao: string | null
+          texto_validade_proposta: string | null
+          updated_at: string
+        }
+        Insert: {
+          contrato_instrucoes_padrao?: string | null
+          cor_primaria?: string | null
+          footer_html?: string | null
+          header_html?: string | null
+          id?: string
+          logo_url?: string | null
+          proposta_template_html?: string | null
+          singleton?: boolean
+          texto_condicoes_comerciais_padrao?: string | null
+          texto_observacoes_padrao?: string | null
+          texto_validade_proposta?: string | null
+          updated_at?: string
+        }
+        Update: {
+          contrato_instrucoes_padrao?: string | null
+          cor_primaria?: string | null
+          footer_html?: string | null
+          header_html?: string | null
+          id?: string
+          logo_url?: string | null
+          proposta_template_html?: string | null
+          singleton?: boolean
+          texto_condicoes_comerciais_padrao?: string | null
+          texto_observacoes_padrao?: string | null
+          texto_validade_proposta?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      deal_activity_logs: {
+        Row: {
+          created_at: string
+          deal_id: string
+          descricao: string
+          id: string
+          payload: Json | null
+          tipo: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          deal_id: string
+          descricao: string
+          id?: string
+          payload?: Json | null
+          tipo: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          deal_id?: string
+          descricao?: string
+          id?: string
+          payload?: Json | null
+          tipo?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_activity_logs_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deal_proposals: {
+        Row: {
+          condicoes_comerciais: string | null
+          created_at: string
+          deal_id: string
+          escopo: string | null
+          gerado_por: string | null
+          id: string
+          licencas_automax_mobile: number | null
+          licencas_maxbip: number | null
+          modulos_adicionais: string[] | null
+          observacoes_comerciais: string | null
+          pdf_path: string | null
+          prazo_dias: number | null
+          qtd_licencas_maquinas: number | null
+          sistema_contratado: string[] | null
+          validade_proposta_dias: number | null
+          valor: number | null
+          valor_implantacao: number | null
+          valor_mensalidade: number | null
+          version: number
+        }
+        Insert: {
+          condicoes_comerciais?: string | null
+          created_at?: string
+          deal_id: string
+          escopo?: string | null
+          gerado_por?: string | null
+          id?: string
+          licencas_automax_mobile?: number | null
+          licencas_maxbip?: number | null
+          modulos_adicionais?: string[] | null
+          observacoes_comerciais?: string | null
+          pdf_path?: string | null
+          prazo_dias?: number | null
+          qtd_licencas_maquinas?: number | null
+          sistema_contratado?: string[] | null
+          validade_proposta_dias?: number | null
+          valor?: number | null
+          valor_implantacao?: number | null
+          valor_mensalidade?: number | null
+          version?: number
+        }
+        Update: {
+          condicoes_comerciais?: string | null
+          created_at?: string
+          deal_id?: string
+          escopo?: string | null
+          gerado_por?: string | null
+          id?: string
+          licencas_automax_mobile?: number | null
+          licencas_maxbip?: number | null
+          modulos_adicionais?: string[] | null
+          observacoes_comerciais?: string | null
+          pdf_path?: string | null
+          prazo_dias?: number | null
+          qtd_licencas_maquinas?: number | null
+          sistema_contratado?: string[] | null
+          validade_proposta_dias?: number | null
+          valor?: number | null
+          valor_implantacao?: number | null
+          valor_mensalidade?: number | null
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_proposals_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deal_signature_documents: {
+        Row: {
+          created_at: string
+          deal_id: string
+          document_type: Database["public"]["Enums"]["signature_doc_type"]
+          file_path: string
+          form_response_id: string | null
+          id: string
+          notes: string | null
+          sent_at: string | null
+          sent_to_client: boolean
+          signed: boolean
+          signed_at: string | null
+          status: Database["public"]["Enums"]["signature_doc_status"]
+          title: string
+          updated_at: string
+          uploaded_by: string
+        }
+        Insert: {
+          created_at?: string
+          deal_id: string
+          document_type?: Database["public"]["Enums"]["signature_doc_type"]
+          file_path: string
+          form_response_id?: string | null
+          id?: string
+          notes?: string | null
+          sent_at?: string | null
+          sent_to_client?: boolean
+          signed?: boolean
+          signed_at?: string | null
+          status?: Database["public"]["Enums"]["signature_doc_status"]
+          title: string
+          updated_at?: string
+          uploaded_by: string
+        }
+        Update: {
+          created_at?: string
+          deal_id?: string
+          document_type?: Database["public"]["Enums"]["signature_doc_type"]
+          file_path?: string
+          form_response_id?: string | null
+          id?: string
+          notes?: string | null
+          sent_at?: string | null
+          sent_to_client?: boolean
+          signed?: boolean
+          signed_at?: string | null
+          status?: Database["public"]["Enums"]["signature_doc_status"]
+          title?: string
+          updated_at?: string
+          uploaded_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_signature_documents_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: false
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deal_signature_documents_form_response_id_fkey"
+            columns: ["form_response_id"]
+            isOneToOne: false
+            referencedRelation: "form_responses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      deals: {
+        Row: {
+          closed_at: string | null
+          complexidade: Database["public"]["Enums"]["deal_complexity"] | null
+          created_at: string
+          etapa: Database["public"]["Enums"]["deal_stage"]
+          form_token: string
+          formulario_preenchido: boolean
+          horas_estimadas: number | null
+          id: string
+          implementation_id: string | null
+          lead_id: string
+          nome_negocio: string
+          probabilidade: number
+          status: Database["public"]["Enums"]["deal_status"]
+          suggested_type:
+            | Database["public"]["Enums"]["deal_suggested_type"]
+            | null
+          updated_at: string
+          valor_estimado: number | null
+          vendedor_id: string
+        }
+        Insert: {
+          closed_at?: string | null
+          complexidade?: Database["public"]["Enums"]["deal_complexity"] | null
+          created_at?: string
+          etapa?: Database["public"]["Enums"]["deal_stage"]
+          form_token?: string
+          formulario_preenchido?: boolean
+          horas_estimadas?: number | null
+          id?: string
+          implementation_id?: string | null
+          lead_id: string
+          nome_negocio: string
+          probabilidade?: number
+          status?: Database["public"]["Enums"]["deal_status"]
+          suggested_type?:
+            | Database["public"]["Enums"]["deal_suggested_type"]
+            | null
+          updated_at?: string
+          valor_estimado?: number | null
+          vendedor_id: string
+        }
+        Update: {
+          closed_at?: string | null
+          complexidade?: Database["public"]["Enums"]["deal_complexity"] | null
+          created_at?: string
+          etapa?: Database["public"]["Enums"]["deal_stage"]
+          form_token?: string
+          formulario_preenchido?: boolean
+          horas_estimadas?: number | null
+          id?: string
+          implementation_id?: string | null
+          lead_id?: string
+          nome_negocio?: string
+          probabilidade?: number
+          status?: Database["public"]["Enums"]["deal_status"]
+          suggested_type?:
+            | Database["public"]["Enums"]["deal_suggested_type"]
+            | null
+          updated_at?: string
+          valor_estimado?: number | null
+          vendedor_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deals_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       demand_analysts: {
         Row: {
           analyst_id: string
@@ -634,6 +934,113 @@ export type Database = {
           },
         ]
       }
+      form_responses: {
+        Row: {
+          cnpj: string | null
+          created_at: string
+          deal_id: string
+          email_empresa: string | null
+          id: string
+          licencas_automax_mobile: number | null
+          licencas_maxbip: number | null
+          migrar_banco_dados: string | null
+          modulos_adicionais: string[] | null
+          nome_fantasia: string | null
+          nome_vendedor: string | null
+          particularidades_identificadas: string | null
+          qtd_licencas_maquinas: number | null
+          quantidade_computadores: number | null
+          razao_social: string | null
+          regime_tributario: string | null
+          responsavel_cpf: string | null
+          responsavel_email: string | null
+          responsavel_nome: string | null
+          responsavel_rg: string | null
+          responsavel_telefone_celular: string | null
+          sistema_atual: string | null
+          sistema_contratado: string[] | null
+          submission_origin: string
+          submitted_by: string | null
+          telefone_celular: string | null
+          telefone_fixo: string | null
+          updated_at: string
+          valor_implantacao: number | null
+          valor_mensalidade: number | null
+        }
+        Insert: {
+          cnpj?: string | null
+          created_at?: string
+          deal_id: string
+          email_empresa?: string | null
+          id?: string
+          licencas_automax_mobile?: number | null
+          licencas_maxbip?: number | null
+          migrar_banco_dados?: string | null
+          modulos_adicionais?: string[] | null
+          nome_fantasia?: string | null
+          nome_vendedor?: string | null
+          particularidades_identificadas?: string | null
+          qtd_licencas_maquinas?: number | null
+          quantidade_computadores?: number | null
+          razao_social?: string | null
+          regime_tributario?: string | null
+          responsavel_cpf?: string | null
+          responsavel_email?: string | null
+          responsavel_nome?: string | null
+          responsavel_rg?: string | null
+          responsavel_telefone_celular?: string | null
+          sistema_atual?: string | null
+          sistema_contratado?: string[] | null
+          submission_origin?: string
+          submitted_by?: string | null
+          telefone_celular?: string | null
+          telefone_fixo?: string | null
+          updated_at?: string
+          valor_implantacao?: number | null
+          valor_mensalidade?: number | null
+        }
+        Update: {
+          cnpj?: string | null
+          created_at?: string
+          deal_id?: string
+          email_empresa?: string | null
+          id?: string
+          licencas_automax_mobile?: number | null
+          licencas_maxbip?: number | null
+          migrar_banco_dados?: string | null
+          modulos_adicionais?: string[] | null
+          nome_fantasia?: string | null
+          nome_vendedor?: string | null
+          particularidades_identificadas?: string | null
+          qtd_licencas_maquinas?: number | null
+          quantidade_computadores?: number | null
+          razao_social?: string | null
+          regime_tributario?: string | null
+          responsavel_cpf?: string | null
+          responsavel_email?: string | null
+          responsavel_nome?: string | null
+          responsavel_rg?: string | null
+          responsavel_telefone_celular?: string | null
+          sistema_atual?: string | null
+          sistema_contratado?: string[] | null
+          submission_origin?: string
+          submitted_by?: string | null
+          telefone_celular?: string | null
+          telefone_fixo?: string | null
+          updated_at?: string
+          valor_implantacao?: number | null
+          valor_mensalidade?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "form_responses_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: true
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ia_feedback: {
         Row: {
           created_at: string
@@ -954,6 +1361,45 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      leads: {
+        Row: {
+          created_at: string
+          created_by: string
+          email: string | null
+          empresa: string | null
+          id: string
+          nome: string
+          observacoes: string | null
+          origem: string | null
+          telefone: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          email?: string | null
+          empresa?: string | null
+          id?: string
+          nome: string
+          observacoes?: string | null
+          origem?: string | null
+          telefone: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          email?: string | null
+          empresa?: string | null
+          id?: string
+          nome?: string
+          observacoes?: string | null
+          origem?: string | null
+          telefone?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       oncenter_client_links: {
         Row: {
@@ -1406,11 +1852,23 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_analyst_on_deal_impl: { Args: { _deal_id: string }; Returns: boolean }
       update_scheduled_implementations: { Args: never; Returns: undefined }
     }
     Enums: {
-      app_role: "admin" | "implantador"
+      app_role: "admin" | "implantador" | "vendedor"
       conclusion_request_status: "pending" | "approved" | "rejected"
+      deal_complexity: "baixa" | "media" | "alta"
+      deal_stage:
+        | "lead"
+        | "contato"
+        | "diagnostico"
+        | "proposta"
+        | "negociacao"
+        | "ganho"
+        | "perdido"
+      deal_status: "ativo" | "ganho" | "perdido"
+      deal_suggested_type: "basic" | "manager" | "web"
       demand_status: "pendente" | "em_andamento" | "concluida" | "atrasada"
       demand_step_response_type: "ok_falha" | "sim_nao" | "texto_livre"
       episode_type:
@@ -1453,6 +1911,8 @@ export type Database = {
         | "corrected"
         | "rolled_back"
       recommendation_type: "resposta_ia" | "sugestao_servico" | "decisao"
+      signature_doc_status: "pendente" | "anexado" | "enviado" | "assinado"
+      signature_doc_type: "contrato_digitalizado" | "termo_assinatura" | "outro"
       visit_status: "aberta" | "analisada" | "resolvida"
       visit_type: "visita_tecnica" | "duvida" | "diagnostico" | "oportunidade"
     }
@@ -1582,8 +2042,20 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "implantador"],
+      app_role: ["admin", "implantador", "vendedor"],
       conclusion_request_status: ["pending", "approved", "rejected"],
+      deal_complexity: ["baixa", "media", "alta"],
+      deal_stage: [
+        "lead",
+        "contato",
+        "diagnostico",
+        "proposta",
+        "negociacao",
+        "ganho",
+        "perdido",
+      ],
+      deal_status: ["ativo", "ganho", "perdido"],
+      deal_suggested_type: ["basic", "manager", "web"],
       demand_status: ["pendente", "em_andamento", "concluida", "atrasada"],
       demand_step_response_type: ["ok_falha", "sim_nao", "texto_livre"],
       episode_type: [
@@ -1632,6 +2104,12 @@ export const Constants = {
         "rolled_back",
       ],
       recommendation_type: ["resposta_ia", "sugestao_servico", "decisao"],
+      signature_doc_status: ["pendente", "anexado", "enviado", "assinado"],
+      signature_doc_type: [
+        "contrato_digitalizado",
+        "termo_assinatura",
+        "outro",
+      ],
       visit_status: ["aberta", "analisada", "resolvida"],
       visit_type: ["visita_tecnica", "duvida", "diagnostico", "oportunidade"],
     },

@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedRoles?: ("admin" | "implantador")[];
+  allowedRoles?: ("admin" | "implantador" | "vendedor")[];
 }
 
 export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {
@@ -27,6 +27,9 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     // Redirect to appropriate dashboard based on role
     if (role === "admin") {
       return <Navigate to="/admin" replace />;
+    }
+    if (role === "vendedor") {
+      return <Navigate to="/vendas" replace />;
     }
     return <Navigate to="/implantador" replace />;
   }
