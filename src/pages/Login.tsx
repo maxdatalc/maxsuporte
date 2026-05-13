@@ -58,6 +58,8 @@ export default function Login() {
 
         if (roleData?.role === "admin") {
           navigate("/admin");
+        } else if (roleData?.role === "vendedor") {
+          navigate("/vendas");
         } else {
           navigate("/implantador");
         }
