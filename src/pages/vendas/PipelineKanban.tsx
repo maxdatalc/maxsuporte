@@ -11,9 +11,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Plus, Loader2, Copy } from "lucide-react";
-import { brl } from "@/lib/crm/format";
+import { brl, maskPhone } from "@/lib/crm/format";
 import { STAGE_LABELS, STAGE_ORDER, DealStage } from "@/lib/crm/types";
 
 interface Deal {
