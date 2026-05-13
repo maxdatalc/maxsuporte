@@ -1409,7 +1409,7 @@ export type Database = {
       update_scheduled_implementations: { Args: never; Returns: undefined }
     }
     Enums: {
-      app_role: "admin" | "implantador"
+      app_role: "admin" | "implantador" | "vendedor"
       conclusion_request_status: "pending" | "approved" | "rejected"
       demand_status: "pendente" | "em_andamento" | "concluida" | "atrasada"
       demand_step_response_type: "ok_falha" | "sim_nao" | "texto_livre"
@@ -1582,7 +1582,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "implantador"],
+      app_role: ["admin", "implantador", "vendedor"],
       conclusion_request_status: ["pending", "approved", "rejected"],
       demand_status: ["pendente", "em_andamento", "concluida", "atrasada"],
       demand_step_response_type: ["ok_falha", "sim_nao", "texto_livre"],
