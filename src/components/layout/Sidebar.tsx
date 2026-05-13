@@ -7,6 +7,7 @@ import {
   LayoutDashboard, ClipboardList, X, BarChart3, Calendar, DollarSign,
   FileText, ClipboardCheck, MessageSquare, BookOpen, Brain, Bot,
   ListChecks, FolderKanban, Users, ChevronDown, Settings, PieChart, UserCircle, DatabaseBackup,
+  Briefcase, Target, FileSignature, KanbanSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -67,15 +68,27 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     },
     {
       type: "group",
+      icon: Briefcase,
+      label: "CRM / Vendas",
+      children: [
+        { to: "/vendas", icon: LayoutDashboard, label: "Dashboard Vendas" },
+        { to: "/vendas/leads", icon: Target, label: "Leads" },
+        { to: "/vendas/pipeline", icon: KanbanSquare, label: "Pipeline" },
+        { to: "/vendas/configuracoes", icon: Settings, label: "Config. CRM" },
+      ],
+    },
+  ];
+
+  const vendedorItems: SidebarItem[] = [
+    { to: "/vendas", icon: LayoutDashboard, label: "Dashboard" },
+    { to: "/vendas/leads", icon: Target, label: "Leads" },
+    { to: "/vendas/pipeline", icon: KanbanSquare, label: "Pipeline" },
+    {
+      type: "group",
       icon: Settings,
       label: "Configurações",
       children: [
-        { to: "/admin/usuarios", icon: Users, label: "Gestão de Usuários" },
-        { to: "/admin/comissoes", icon: DollarSign, label: "Comissões" },
-        { to: "/admin/base-conhecimento", icon: Brain, label: "Base Conhecimento IA" },
-        { to: "/admin/demandas/modelos", icon: ListChecks, label: "Modelos POP" },
-        { to: "/admin/perfil", icon: UserCircle, label: "Meu Perfil" },
-        { to: "/admin/backup", icon: DatabaseBackup, label: "Backup & Restauração" },
+        { to: "/vendas/perfil", icon: UserCircle, label: "Perfil" },
       ],
     },
   ];
