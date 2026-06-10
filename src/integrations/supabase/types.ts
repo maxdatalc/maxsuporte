@@ -1841,6 +1841,14 @@ export type Database = {
         Args: { impl_type: Database["public"]["Enums"]["implementation_type"] }
         Returns: number
       }
+      get_public_profiles: {
+        Args: { _user_ids?: string[] }
+        Returns: {
+          avatar_url: string
+          name: string
+          user_id: string
+        }[]
+      }
       get_user_role: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["app_role"]
