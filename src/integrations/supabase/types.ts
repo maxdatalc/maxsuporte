@@ -1818,24 +1818,7 @@ export type Database = {
       }
     }
     Views: {
-      public_profiles: {
-        Row: {
-          avatar_url: string | null
-          name: string | null
-          user_id: string | null
-        }
-        Insert: {
-          avatar_url?: string | null
-          name?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          name?: string | null
-          user_id?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       calculate_ai_quality_score: {
@@ -1857,6 +1840,14 @@ export type Database = {
       get_active_commission: {
         Args: { impl_type: Database["public"]["Enums"]["implementation_type"] }
         Returns: number
+      }
+      get_public_profiles: {
+        Args: { _user_ids?: string[] }
+        Returns: {
+          avatar_url: string
+          name: string
+          user_id: string
+        }[]
       }
       get_user_role: {
         Args: { _user_id: string }
