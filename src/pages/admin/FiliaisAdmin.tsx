@@ -51,10 +51,40 @@ export default function FiliaisAdmin() {
   const [newNome, setNewNome] = useState("");
   const [newCnpj, setNewCnpj] = useState("");
 
+  // Edit dialog
+  const [openEdit, setOpenEdit] = useState<Filial | null>(null);
+  const [editNome, setEditNome] = useState("");
+  const [editCnpj, setEditCnpj] = useState("");
+
   // Assign dialog
   const [openAssign, setOpenAssign] = useState<Filial | null>(null);
   const [assignUserId, setAssignUserId] = useState("");
   const [assignRole, setAssignRole] = useState("implantador");
+
+  const startEdit = (f: Filial) => {
+    setEditNome(f.nome);
+    setEditCnpj(f.cnpj || "");
+    setOpenEdit(f);
+  };
+
+  const saveEdit = async () => {
+    if (!openEdit) return;
+    if (!editNome.trim()) {
+      toast({ title: "Informe o nome da filial", variant: "destructive" });
+      return;
+    }
+    const { error } = await supabase
+      .from("filiais")
+      .update({ nome: editNome.trim(), cnpj: editCnpj.trim() || null })
+      .eq("id", openEdit.id);
+    if (error) {
+      toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: "Filial atualizada" });
+    setOpenEdit(null);
+    load();
+  };
 
   const load = async () => {
     setLoading(true);
