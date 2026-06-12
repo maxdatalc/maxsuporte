@@ -347,6 +347,34 @@ export default function FiliaisAdmin() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        {/* Edit dialog */}
+        <Dialog open={!!openEdit} onOpenChange={(o) => !o && setOpenEdit(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Editar filial</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label>Nome *</Label>
+                <Input value={editNome} onChange={(e) => setEditNome(e.target.value)} />
+              </div>
+              <div>
+                <Label>CNPJ</Label>
+                <Input value={editCnpj} onChange={(e) => setEditCnpj(e.target.value)} placeholder="00.000.000/0000-00" />
+              </div>
+              {openEdit?.id === MATRIZ_ID && (
+                <p className="text-xs text-muted-foreground">
+                  Esta é a filial padrão do sistema. Renomeie para refletir a filial atual da sua empresa.
+                </p>
+              )}
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setOpenEdit(null)}>Cancelar</Button>
+              <Button onClick={saveEdit}>Salvar</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </DashboardLayout>
   );
