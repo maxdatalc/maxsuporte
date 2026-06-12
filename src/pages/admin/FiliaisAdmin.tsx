@@ -252,6 +252,9 @@ export default function FiliaisAdmin() {
                           <Label className="text-xs">Ativa</Label>
                           <Switch checked={f.ativo} onCheckedChange={() => toggleAtivo(f)} disabled={f.id === MATRIZ_ID} />
                         </div>
+                        <Button size="sm" variant="outline" onClick={() => startEdit(f)}>
+                          <Pencil className="mr-2 h-4 w-4" /> Editar
+                        </Button>
                         <Button size="sm" variant="outline" onClick={() => setOpenAssign(f)}>
                           <UserPlus className="mr-2 h-4 w-4" /> Vincular usuário
                         </Button>
