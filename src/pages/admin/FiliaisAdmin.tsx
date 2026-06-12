@@ -161,7 +161,7 @@ export default function FiliaisAdmin() {
     assignments.filter((a) => a.filial_id === filialId);
 
   return (
-    <AppLayout>
+    <DashboardLayout>
       <div className="space-y-6 p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -315,6 +315,6 @@ export default function FiliaisAdmin() {
           </DialogContent>
         </Dialog>
       </div>
-    </AppLayout>
+    </DashboardLayout>
   );
 }
