@@ -12,6 +12,7 @@ import ImplantacoesAdmin from "./pages/admin/ImplantacoesAdmin";
 import NovaImplantacao from "./pages/admin/NovaImplantacao";
 import EditarImplantacao from "./pages/admin/EditarImplantacao";
 import UsuariosAdmin from "./pages/admin/UsuariosAdmin";
+import FiliaisAdmin from "./pages/admin/FiliaisAdmin";
 import RelatoriosProdutividade from "./pages/admin/RelatoriosProdutividade";
 import DisponibilidadeCalendario from "./pages/admin/DisponibilidadeCalendario";
 import ConfiguracaoComissoes from "./pages/admin/ConfiguracaoComissoes";
@@ -80,6 +81,7 @@ function AppRoutes() {
       <Route path="/admin/minhas-implantacoes" element={<ProtectedRoute allowedRoles={["admin"]}><ImplantadorDashboard /></ProtectedRoute>} />
       <Route path="/admin/implantacoes/:id/editar" element={<ProtectedRoute allowedRoles={["admin"]}><EditarImplantacao /></ProtectedRoute>} />
       <Route path="/admin/usuarios" element={<ProtectedRoute allowedRoles={["admin"]}><UsuariosAdmin /></ProtectedRoute>} />
+      <Route path="/admin/filiais" element={<ProtectedRoute allowedRoles={["admin"]}><FiliaisAdmin /></ProtectedRoute>} />
       <Route path="/admin/relatorios" element={<ProtectedRoute allowedRoles={["admin"]}><RelatoriosProdutividade /></ProtectedRoute>} />
       <Route path="/admin/disponibilidade" element={<ProtectedRoute allowedRoles={["admin"]}><DisponibilidadeCalendario /></ProtectedRoute>} />
       <Route path="/admin/comissoes" element={<ProtectedRoute allowedRoles={["admin"]}><ConfiguracaoComissoes /></ProtectedRoute>} />

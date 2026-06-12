@@ -7,7 +7,7 @@ import {
   LayoutDashboard, ClipboardList, X, BarChart3, Calendar, DollarSign,
   FileText, ClipboardCheck, MessageSquare, BookOpen, Brain, Bot,
   ListChecks, FolderKanban, Users, ChevronDown, Settings, PieChart, UserCircle, DatabaseBackup,
-  Briefcase, Target, FileSignature, KanbanSquare,
+  Briefcase, Target, FileSignature, KanbanSquare, Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -83,6 +83,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       label: "Configurações",
       children: [
         { to: "/admin/usuarios", icon: Users, label: "Gestão de Usuários" },
+        { to: "/admin/filiais", icon: Building2, label: "Filiais" },
         { to: "/admin/comissoes", icon: DollarSign, label: "Comissões" },
         { to: "/admin/base-conhecimento", icon: Brain, label: "Base Conhecimento IA" },
         { to: "/admin/demandas/modelos", icon: ListChecks, label: "Modelos POP" },
