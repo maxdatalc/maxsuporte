@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import logo from "@/assets/logo.jpeg";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { FilialSelector } from "@/components/layout/FilialSelector";
 
 interface HeaderProps {
   onMenuClick?: () => void;
@@ -49,7 +50,8 @@ export function Header({ onMenuClick }: HeaderProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
+          <FilialSelector />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5">

@@ -12,7 +12,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
-import { Building2, Plus, Trash2, UserPlus } from "lucide-react";
+import { Building2, Plus, Trash2, UserPlus, Pencil } from "lucide-react";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
 interface Filial {
@@ -51,10 +51,40 @@ export default function FiliaisAdmin() {
   const [newNome, setNewNome] = useState("");
   const [newCnpj, setNewCnpj] = useState("");
 
+  // Edit dialog
+  const [openEdit, setOpenEdit] = useState<Filial | null>(null);
+  const [editNome, setEditNome] = useState("");
+  const [editCnpj, setEditCnpj] = useState("");
+
   // Assign dialog
   const [openAssign, setOpenAssign] = useState<Filial | null>(null);
   const [assignUserId, setAssignUserId] = useState("");
   const [assignRole, setAssignRole] = useState("implantador");
+
+  const startEdit = (f: Filial) => {
+    setEditNome(f.nome);
+    setEditCnpj(f.cnpj || "");
+    setOpenEdit(f);
+  };
+
+  const saveEdit = async () => {
+    if (!openEdit) return;
+    if (!editNome.trim()) {
+      toast({ title: "Informe o nome da filial", variant: "destructive" });
+      return;
+    }
+    const { error } = await supabase
+      .from("filiais")
+      .update({ nome: editNome.trim(), cnpj: editCnpj.trim() || null })
+      .eq("id", openEdit.id);
+    if (error) {
+      toast({ title: "Erro ao salvar", description: error.message, variant: "destructive" });
+      return;
+    }
+    toast({ title: "Filial atualizada" });
+    setOpenEdit(null);
+    load();
+  };
 
   const load = async () => {
     setLoading(true);
@@ -222,6 +252,9 @@ export default function FiliaisAdmin() {
                           <Label className="text-xs">Ativa</Label>
                           <Switch checked={f.ativo} onCheckedChange={() => toggleAtivo(f)} disabled={f.id === MATRIZ_ID} />
                         </div>
+                        <Button size="sm" variant="outline" onClick={() => startEdit(f)}>
+                          <Pencil className="mr-2 h-4 w-4" /> Editar
+                        </Button>
                         <Button size="sm" variant="outline" onClick={() => setOpenAssign(f)}>
                           <UserPlus className="mr-2 h-4 w-4" /> Vincular usuário
                         </Button>
@@ -311,6 +344,34 @@ export default function FiliaisAdmin() {
             <DialogFooter>
               <Button variant="outline" onClick={() => setOpenAssign(null)}>Cancelar</Button>
               <Button onClick={assignUser} disabled={!assignUserId}>Vincular</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        {/* Edit dialog */}
+        <Dialog open={!!openEdit} onOpenChange={(o) => !o && setOpenEdit(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Editar filial</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label>Nome *</Label>
+                <Input value={editNome} onChange={(e) => setEditNome(e.target.value)} />
+              </div>
+              <div>
+                <Label>CNPJ</Label>
+                <Input value={editCnpj} onChange={(e) => setEditCnpj(e.target.value)} placeholder="00.000.000/0000-00" />
+              </div>
+              {openEdit?.id === MATRIZ_ID && (
+                <p className="text-xs text-muted-foreground">
+                  Esta é a filial padrão do sistema. Renomeie para refletir a filial atual da sua empresa.
+                </p>
+              )}
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setOpenEdit(null)}>Cancelar</Button>
+              <Button onClick={saveEdit}>Salvar</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
