@@ -22,6 +22,7 @@ export type Database = {
           created_at: string
           created_by: string | null
           diretriz_decisao: string | null
+          filial_id: string | null
           id: string
           perfil_cliente: string | null
           sugestao_servico: string | null
@@ -35,6 +36,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           diretriz_decisao?: string | null
+          filial_id?: string | null
           id?: string
           perfil_cliente?: string | null
           sugestao_servico?: string | null
@@ -48,13 +50,22 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           diretriz_decisao?: string | null
+          filial_id?: string | null
           id?: string
           perfil_cliente?: string | null
           sugestao_servico?: string | null
           titulo?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "base_conhecimento_ia_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       checklist_items: {
         Row: {
@@ -118,6 +129,7 @@ export type Database = {
           cnpj: string | null
           created_at: string
           created_by: string | null
+          filial_id: string | null
           id: string
           name: string
           observations: string | null
@@ -127,6 +139,7 @@ export type Database = {
           cnpj?: string | null
           created_at?: string
           created_by?: string | null
+          filial_id?: string | null
           id?: string
           name: string
           observations?: string | null
@@ -136,18 +149,28 @@ export type Database = {
           cnpj?: string | null
           created_at?: string
           created_by?: string | null
+          filial_id?: string | null
           id?: string
           name?: string
           observations?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "clients_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       commission_rules: {
         Row: {
           commission_value: number
           created_at: string
           created_by: string | null
+          filial_id: string | null
           id: string
           implementation_type: Database["public"]["Enums"]["implementation_type"]
           is_active: boolean
@@ -157,6 +180,7 @@ export type Database = {
           commission_value?: number
           created_at?: string
           created_by?: string | null
+          filial_id?: string | null
           id?: string
           implementation_type: Database["public"]["Enums"]["implementation_type"]
           is_active?: boolean
@@ -166,18 +190,28 @@ export type Database = {
           commission_value?: number
           created_at?: string
           created_by?: string | null
+          filial_id?: string | null
           id?: string
           implementation_type?: Database["public"]["Enums"]["implementation_type"]
           is_active?: boolean
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "commission_rules_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       commission_types: {
         Row: {
           created_at: string
           created_by: string | null
           description: string | null
+          filial_id: string | null
           id: string
           is_active: boolean
           name: string
@@ -188,6 +222,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
+          filial_id?: string | null
           id?: string
           is_active?: boolean
           name: string
@@ -198,19 +233,29 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
+          filial_id?: string | null
           id?: string
           is_active?: boolean
           name?: string
           updated_at?: string
           value?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "commission_types_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       conclusion_requests: {
         Row: {
           admin_observation: string | null
           approved_by: string | null
           created_at: string
+          filial_id: string | null
           id: string
           implementation_id: string
           requester_id: string
@@ -222,6 +267,7 @@ export type Database = {
           admin_observation?: string | null
           approved_by?: string | null
           created_at?: string
+          filial_id?: string | null
           id?: string
           implementation_id: string
           requester_id: string
@@ -233,6 +279,7 @@ export type Database = {
           admin_observation?: string | null
           approved_by?: string | null
           created_at?: string
+          filial_id?: string | null
           id?: string
           implementation_id?: string
           requester_id?: string
@@ -241,6 +288,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "conclusion_requests_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "conclusion_requests_implementation_id_fkey"
             columns: ["implementation_id"]
@@ -254,6 +308,7 @@ export type Database = {
         Row: {
           contrato_instrucoes_padrao: string | null
           cor_primaria: string | null
+          filial_id: string | null
           footer_html: string | null
           header_html: string | null
           id: string
@@ -268,6 +323,7 @@ export type Database = {
         Insert: {
           contrato_instrucoes_padrao?: string | null
           cor_primaria?: string | null
+          filial_id?: string | null
           footer_html?: string | null
           header_html?: string | null
           id?: string
@@ -282,6 +338,7 @@ export type Database = {
         Update: {
           contrato_instrucoes_padrao?: string | null
           cor_primaria?: string | null
+          filial_id?: string | null
           footer_html?: string | null
           header_html?: string | null
           id?: string
@@ -293,7 +350,15 @@ export type Database = {
           texto_validade_proposta?: string | null
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "crm_settings_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       deal_activity_logs: {
         Row: {
@@ -482,6 +547,7 @@ export type Database = {
           complexidade: Database["public"]["Enums"]["deal_complexity"] | null
           created_at: string
           etapa: Database["public"]["Enums"]["deal_stage"]
+          filial_id: string | null
           form_token: string
           formulario_preenchido: boolean
           horas_estimadas: number | null
@@ -503,6 +569,7 @@ export type Database = {
           complexidade?: Database["public"]["Enums"]["deal_complexity"] | null
           created_at?: string
           etapa?: Database["public"]["Enums"]["deal_stage"]
+          filial_id?: string | null
           form_token?: string
           formulario_preenchido?: boolean
           horas_estimadas?: number | null
@@ -524,6 +591,7 @@ export type Database = {
           complexidade?: Database["public"]["Enums"]["deal_complexity"] | null
           created_at?: string
           etapa?: Database["public"]["Enums"]["deal_stage"]
+          filial_id?: string | null
           form_token?: string
           formulario_preenchido?: boolean
           horas_estimadas?: number | null
@@ -541,6 +609,13 @@ export type Database = {
           vendedor_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "deals_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "deals_lead_id_fkey"
             columns: ["lead_id"]
@@ -760,6 +835,7 @@ export type Database = {
           created_at: string
           created_by: string
           description: string | null
+          filial_id: string | null
           id: string
           is_active: boolean
           name: string
@@ -770,6 +846,7 @@ export type Database = {
           created_at?: string
           created_by: string
           description?: string | null
+          filial_id?: string | null
           id?: string
           is_active?: boolean
           name: string
@@ -780,12 +857,21 @@ export type Database = {
           created_at?: string
           created_by?: string
           description?: string | null
+          filial_id?: string | null
           id?: string
           is_active?: boolean
           name?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "demand_templates_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       demands: {
         Row: {
@@ -794,6 +880,7 @@ export type Database = {
           created_by: string
           deadline: string | null
           description: string | null
+          filial_id: string | null
           id: string
           max_score: number
           status: Database["public"]["Enums"]["demand_status"]
@@ -808,6 +895,7 @@ export type Database = {
           created_by: string
           deadline?: string | null
           description?: string | null
+          filial_id?: string | null
           id?: string
           max_score?: number
           status?: Database["public"]["Enums"]["demand_status"]
@@ -822,6 +910,7 @@ export type Database = {
           created_by?: string
           deadline?: string | null
           description?: string | null
+          filial_id?: string | null
           id?: string
           max_score?: number
           status?: Database["public"]["Enums"]["demand_status"]
@@ -831,6 +920,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "demands_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "demands_template_id_fkey"
             columns: ["template_id"]
@@ -933,6 +1029,33 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      filiais: {
+        Row: {
+          ativo: boolean
+          cnpj: string | null
+          created_at: string
+          id: string
+          nome: string
+          updated_at: string
+        }
+        Insert: {
+          ativo?: boolean
+          cnpj?: string | null
+          created_at?: string
+          id?: string
+          nome: string
+          updated_at?: string
+        }
+        Update: {
+          ativo?: boolean
+          cnpj?: string | null
+          created_at?: string
+          id?: string
+          nome?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       form_responses: {
         Row: {
@@ -1286,6 +1409,7 @@ export type Database = {
           created_at: string
           created_by: string | null
           end_date: string | null
+          filial_id: string | null
           has_data_migration: boolean
           id: string
           implementation_type:
@@ -1309,6 +1433,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           end_date?: string | null
+          filial_id?: string | null
           has_data_migration?: boolean
           id?: string
           implementation_type?:
@@ -1332,6 +1457,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           end_date?: string | null
+          filial_id?: string | null
           has_data_migration?: boolean
           id?: string
           implementation_type?:
@@ -1360,6 +1486,13 @@ export type Database = {
             referencedRelation: "commission_types"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "implementations_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
+            referencedColumns: ["id"]
+          },
         ]
       }
       leads: {
@@ -1368,6 +1501,7 @@ export type Database = {
           created_by: string
           email: string | null
           empresa: string | null
+          filial_id: string | null
           id: string
           nome: string
           observacoes: string | null
@@ -1380,6 +1514,7 @@ export type Database = {
           created_by: string
           email?: string | null
           empresa?: string | null
+          filial_id?: string | null
           id?: string
           nome: string
           observacoes?: string | null
@@ -1392,6 +1527,7 @@ export type Database = {
           created_by?: string
           email?: string | null
           empresa?: string | null
+          filial_id?: string | null
           id?: string
           nome?: string
           observacoes?: string | null
@@ -1399,7 +1535,15 @@ export type Database = {
           telefone?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "leads_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       oncenter_client_links: {
         Row: {
@@ -1589,6 +1733,7 @@ export type Database = {
           avatar_url: string | null
           created_at: string
           email: string
+          filial_id: string | null
           id: string
           is_active: boolean
           name: string
@@ -1599,6 +1744,7 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           email: string
+          filial_id?: string | null
           id?: string
           is_active?: boolean
           name: string
@@ -1609,13 +1755,22 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           email?: string
+          filial_id?: string | null
           id?: string
           is_active?: boolean
           name?: string
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       recomendacoes_visita: {
         Row: {
@@ -1648,6 +1803,41 @@ export type Database = {
             columns: ["visita_id"]
             isOneToOne: false
             referencedRelation: "visitas"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_filiais: {
+        Row: {
+          created_at: string
+          filial_id: string
+          id: string
+          is_default: boolean
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          filial_id: string
+          id?: string
+          is_default?: boolean
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          filial_id?: string
+          id?: string
+          is_default?: boolean
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_filiais_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
             referencedColumns: ["id"]
           },
         ]
@@ -1741,6 +1931,7 @@ export type Database = {
           cliente_id: string
           created_at: string
           descricao_situacao: string
+          filial_id: string | null
           id: string
           implantacao_id: string | null
           status: Database["public"]["Enums"]["visit_status"]
@@ -1753,6 +1944,7 @@ export type Database = {
           cliente_id: string
           created_at?: string
           descricao_situacao: string
+          filial_id?: string | null
           id?: string
           implantacao_id?: string | null
           status?: Database["public"]["Enums"]["visit_status"]
@@ -1765,6 +1957,7 @@ export type Database = {
           cliente_id?: string
           created_at?: string
           descricao_situacao?: string
+          filial_id?: string | null
           id?: string
           implantacao_id?: string | null
           status?: Database["public"]["Enums"]["visit_status"]
@@ -1778,6 +1971,13 @@ export type Database = {
             columns: ["cliente_id"]
             isOneToOne: false
             referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visitas_filial_id_fkey"
+            columns: ["filial_id"]
+            isOneToOne: false
+            referencedRelation: "filiais"
             referencedColumns: ["id"]
           },
           {
@@ -1837,6 +2037,7 @@ export type Database = {
         Args: { impl_id: string }
         Returns: undefined
       }
+      current_filial: { Args: never; Returns: string }
       get_active_commission: {
         Args: { impl_type: Database["public"]["Enums"]["implementation_type"] }
         Returns: number
@@ -1862,6 +2063,10 @@ export type Database = {
       }
       is_analyst_on_deal_impl: { Args: { _deal_id: string }; Returns: boolean }
       update_scheduled_implementations: { Args: never; Returns: undefined }
+      user_has_filial: {
+        Args: { _filial_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       app_role: "admin" | "implantador" | "vendedor"
