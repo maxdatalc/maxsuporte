@@ -22,7 +22,7 @@ export type Database = {
           created_at: string
           created_by: string | null
           diretriz_decisao: string | null
-          filial_id: string | null
+          filial_id: string
           id: string
           perfil_cliente: string | null
           sugestao_servico: string | null
@@ -36,7 +36,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           diretriz_decisao?: string | null
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           perfil_cliente?: string | null
           sugestao_servico?: string | null
@@ -50,7 +50,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           diretriz_decisao?: string | null
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           perfil_cliente?: string | null
           sugestao_servico?: string | null
@@ -129,7 +129,7 @@ export type Database = {
           cnpj: string | null
           created_at: string
           created_by: string | null
-          filial_id: string | null
+          filial_id: string
           id: string
           name: string
           observations: string | null
@@ -139,7 +139,7 @@ export type Database = {
           cnpj?: string | null
           created_at?: string
           created_by?: string | null
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           name: string
           observations?: string | null
@@ -149,7 +149,7 @@ export type Database = {
           cnpj?: string | null
           created_at?: string
           created_by?: string | null
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           name?: string
           observations?: string | null
@@ -170,7 +170,7 @@ export type Database = {
           commission_value: number
           created_at: string
           created_by: string | null
-          filial_id: string | null
+          filial_id: string
           id: string
           implementation_type: Database["public"]["Enums"]["implementation_type"]
           is_active: boolean
@@ -180,7 +180,7 @@ export type Database = {
           commission_value?: number
           created_at?: string
           created_by?: string | null
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           implementation_type: Database["public"]["Enums"]["implementation_type"]
           is_active?: boolean
@@ -190,7 +190,7 @@ export type Database = {
           commission_value?: number
           created_at?: string
           created_by?: string | null
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           implementation_type?: Database["public"]["Enums"]["implementation_type"]
           is_active?: boolean
@@ -211,7 +211,7 @@ export type Database = {
           created_at: string
           created_by: string | null
           description: string | null
-          filial_id: string | null
+          filial_id: string
           id: string
           is_active: boolean
           name: string
@@ -222,7 +222,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           is_active?: boolean
           name: string
@@ -233,7 +233,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           description?: string | null
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           is_active?: boolean
           name?: string
@@ -255,7 +255,7 @@ export type Database = {
           admin_observation: string | null
           approved_by: string | null
           created_at: string
-          filial_id: string | null
+          filial_id: string
           id: string
           implementation_id: string
           requester_id: string
@@ -267,7 +267,7 @@ export type Database = {
           admin_observation?: string | null
           approved_by?: string | null
           created_at?: string
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           implementation_id: string
           requester_id: string
@@ -279,7 +279,7 @@ export type Database = {
           admin_observation?: string | null
           approved_by?: string | null
           created_at?: string
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           implementation_id?: string
           requester_id?: string
@@ -308,7 +308,7 @@ export type Database = {
         Row: {
           contrato_instrucoes_padrao: string | null
           cor_primaria: string | null
-          filial_id: string | null
+          filial_id: string
           footer_html: string | null
           header_html: string | null
           id: string
@@ -323,7 +323,7 @@ export type Database = {
         Insert: {
           contrato_instrucoes_padrao?: string | null
           cor_primaria?: string | null
-          filial_id?: string | null
+          filial_id?: string
           footer_html?: string | null
           header_html?: string | null
           id?: string
@@ -338,7 +338,7 @@ export type Database = {
         Update: {
           contrato_instrucoes_padrao?: string | null
           cor_primaria?: string | null
-          filial_id?: string | null
+          filial_id?: string
           footer_html?: string | null
           header_html?: string | null
           id?: string
@@ -547,7 +547,7 @@ export type Database = {
           complexidade: Database["public"]["Enums"]["deal_complexity"] | null
           created_at: string
           etapa: Database["public"]["Enums"]["deal_stage"]
-          filial_id: string | null
+          filial_id: string
           form_token: string
           formulario_preenchido: boolean
           horas_estimadas: number | null
@@ -569,7 +569,7 @@ export type Database = {
           complexidade?: Database["public"]["Enums"]["deal_complexity"] | null
           created_at?: string
           etapa?: Database["public"]["Enums"]["deal_stage"]
-          filial_id?: string | null
+          filial_id?: string
           form_token?: string
           formulario_preenchido?: boolean
           horas_estimadas?: number | null
@@ -591,7 +591,7 @@ export type Database = {
           complexidade?: Database["public"]["Enums"]["deal_complexity"] | null
           created_at?: string
           etapa?: Database["public"]["Enums"]["deal_stage"]
-          filial_id?: string | null
+          filial_id?: string
           form_token?: string
           formulario_preenchido?: boolean
           horas_estimadas?: number | null
@@ -835,7 +835,7 @@ export type Database = {
           created_at: string
           created_by: string
           description: string | null
-          filial_id: string | null
+          filial_id: string
           id: string
           is_active: boolean
           name: string
@@ -846,7 +846,7 @@ export type Database = {
           created_at?: string
           created_by: string
           description?: string | null
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           is_active?: boolean
           name: string
@@ -857,7 +857,7 @@ export type Database = {
           created_at?: string
           created_by?: string
           description?: string | null
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           is_active?: boolean
           name?: string
@@ -880,7 +880,7 @@ export type Database = {
           created_by: string
           deadline: string | null
           description: string | null
-          filial_id: string | null
+          filial_id: string
           id: string
           max_score: number
           status: Database["public"]["Enums"]["demand_status"]
@@ -895,7 +895,7 @@ export type Database = {
           created_by: string
           deadline?: string | null
           description?: string | null
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           max_score?: number
           status?: Database["public"]["Enums"]["demand_status"]
@@ -910,7 +910,7 @@ export type Database = {
           created_by?: string
           deadline?: string | null
           description?: string | null
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           max_score?: number
           status?: Database["public"]["Enums"]["demand_status"]
@@ -1409,7 +1409,7 @@ export type Database = {
           created_at: string
           created_by: string | null
           end_date: string | null
-          filial_id: string | null
+          filial_id: string
           has_data_migration: boolean
           id: string
           implementation_type:
@@ -1433,7 +1433,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           end_date?: string | null
-          filial_id?: string | null
+          filial_id?: string
           has_data_migration?: boolean
           id?: string
           implementation_type?:
@@ -1457,7 +1457,7 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           end_date?: string | null
-          filial_id?: string | null
+          filial_id?: string
           has_data_migration?: boolean
           id?: string
           implementation_type?:
@@ -1501,7 +1501,7 @@ export type Database = {
           created_by: string
           email: string | null
           empresa: string | null
-          filial_id: string | null
+          filial_id: string
           id: string
           nome: string
           observacoes: string | null
@@ -1514,7 +1514,7 @@ export type Database = {
           created_by: string
           email?: string | null
           empresa?: string | null
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           nome: string
           observacoes?: string | null
@@ -1527,7 +1527,7 @@ export type Database = {
           created_by?: string
           email?: string | null
           empresa?: string | null
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           nome?: string
           observacoes?: string | null
@@ -1733,7 +1733,7 @@ export type Database = {
           avatar_url: string | null
           created_at: string
           email: string
-          filial_id: string | null
+          filial_id: string
           id: string
           is_active: boolean
           name: string
@@ -1744,7 +1744,7 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           email: string
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           is_active?: boolean
           name: string
@@ -1755,7 +1755,7 @@ export type Database = {
           avatar_url?: string | null
           created_at?: string
           email?: string
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           is_active?: boolean
           name?: string
@@ -1931,7 +1931,7 @@ export type Database = {
           cliente_id: string
           created_at: string
           descricao_situacao: string
-          filial_id: string | null
+          filial_id: string
           id: string
           implantacao_id: string | null
           status: Database["public"]["Enums"]["visit_status"]
@@ -1944,7 +1944,7 @@ export type Database = {
           cliente_id: string
           created_at?: string
           descricao_situacao: string
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           implantacao_id?: string | null
           status?: Database["public"]["Enums"]["visit_status"]
@@ -1957,7 +1957,7 @@ export type Database = {
           cliente_id?: string
           created_at?: string
           descricao_situacao?: string
-          filial_id?: string | null
+          filial_id?: string
           id?: string
           implantacao_id?: string | null
           status?: Database["public"]["Enums"]["visit_status"]
