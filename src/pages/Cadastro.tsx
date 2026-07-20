@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,12 +7,21 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, Mail, Lock, User } from "lucide-react";
+
+function safeNext(raw: string | null): string | null {
+  if (!raw) return null;
+  if (!raw.startsWith("/") || raw.startsWith("//")) return null;
+  return raw;
+}
+
 export default function Cadastro() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const next = safeNext(searchParams.get("next"));
   const {
     toast
   } = useToast();
@@ -20,6 +29,9 @@ export default function Cadastro() {
     e.preventDefault();
     setLoading(true);
     try {
+      const emailRedirectTo = next
+        ? `${window.location.origin}${next}`
+        : window.location.origin;
       const {
         data,
         error
@@ -27,7 +39,7 @@ export default function Cadastro() {
         email,
         password,
         options: {
-          emailRedirectTo: window.location.origin,
+          emailRedirectTo,
           data: {
             name,
             role: "implantador" // Always implantador - admin must be created manually
@@ -40,7 +52,7 @@ export default function Cadastro() {
           title: "Cadastro realizado com sucesso!",
           description: "Você será redirecionado para o login."
         });
-        navigate("/login");
+        navigate(next ? `/login?next=${encodeURIComponent(next)}` : "/login");
       }
     } catch (error: any) {
       toast({
