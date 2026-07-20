@@ -43,11 +43,20 @@ import PipelineKanban from "./pages/vendas/PipelineKanban";
 import DealDetalhe from "./pages/vendas/DealDetalhe";
 import ConfiguracoesCRM from "./pages/vendas/ConfiguracoesCRM";
 import FormularioPublico from "./pages/vendas/FormularioPublico";
+import OAuthConsent from "./pages/OAuthConsent";
+
+
 
 const queryClient = new QueryClient();
 
 function AppRoutes() {
   const { user, role, loading } = useAuth();
+  const nextParam = typeof window !== "undefined"
+    ? new URLSearchParams(window.location.search).get("next")
+    : null;
+  const safeNext = nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//") ? nextParam : null;
+  const roleHome = role === "admin" ? "/admin" : role === "vendedor" ? "/vendas" : "/implantador";
+  const postLogin = safeNext ?? roleHome;
 
   if (loading) {
     return (
@@ -60,11 +69,14 @@ function AppRoutes() {
   return (
     <Routes>
       {/* Public routes */}
-      <Route path="/login" element={user ? <Navigate to={role === "admin" ? "/admin" : role === "vendedor" ? "/vendas" : "/implantador"} replace /> : <Login />} />
+      <Route path="/login" element={user ? <Navigate to={postLogin} replace /> : <Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
-      <Route path="/cadastro" element={user ? <Navigate to={role === "admin" ? "/admin" : role === "vendedor" ? "/vendas" : "/implantador"} replace /> : <Cadastro />} />
+      <Route path="/cadastro" element={user ? <Navigate to={postLogin} replace /> : <Cadastro />} />
       <Route path="/formulario/:dealId/:token" element={<FormularioPublico />} />
-      <Route path="/" element={user ? <Navigate to={role === "admin" ? "/admin" : role === "vendedor" ? "/vendas" : "/implantador"} replace /> : <Navigate to="/login" replace />} />
+      <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
+      <Route path="/" element={user ? <Navigate to={roleHome} replace /> : <Navigate to="/login" replace />} />
+
+
 
       {/* CRM / Vendas */}
       <Route path="/vendas" element={<ProtectedRoute allowedRoles={["admin", "vendedor"]}><VendasDashboard /></ProtectedRoute>} />

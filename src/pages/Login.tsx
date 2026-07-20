@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ForgotPasswordDialog } from "@/components/ForgotPasswordDialog";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,11 +10,20 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, Mail, Lock } from "lucide-react";
 import logo from "@/assets/logo.jpeg";
 
+// Only allow same-origin relative paths as post-login redirect targets.
+function safeNext(raw: string | null): string | null {
+  if (!raw) return null;
+  if (!raw.startsWith("/") || raw.startsWith("//")) return null;
+  return raw;
+}
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const next = safeNext(searchParams.get("next"));
   const { toast } = useToast();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -56,7 +65,9 @@ export default function Login() {
           .eq("user_id", data.user.id)
           .maybeSingle();
 
-        if (roleData?.role === "admin") {
+        if (next) {
+          navigate(next);
+        } else if (roleData?.role === "admin") {
           navigate("/admin");
         } else if (roleData?.role === "vendedor") {
           navigate("/vendas");
