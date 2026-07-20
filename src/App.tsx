@@ -43,6 +43,9 @@ import PipelineKanban from "./pages/vendas/PipelineKanban";
 import DealDetalhe from "./pages/vendas/DealDetalhe";
 import ConfiguracoesCRM from "./pages/vendas/ConfiguracoesCRM";
 import FormularioPublico from "./pages/vendas/FormularioPublico";
+import OAuthConsent from "./pages/OAuthConsent";
+
+
 
 const queryClient = new QueryClient();
 
@@ -64,7 +67,9 @@ function AppRoutes() {
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/cadastro" element={user ? <Navigate to={role === "admin" ? "/admin" : role === "vendedor" ? "/vendas" : "/implantador"} replace /> : <Cadastro />} />
       <Route path="/formulario/:dealId/:token" element={<FormularioPublico />} />
+      <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
       <Route path="/" element={user ? <Navigate to={role === "admin" ? "/admin" : role === "vendedor" ? "/vendas" : "/implantador"} replace /> : <Navigate to="/login" replace />} />
+
 
       {/* CRM / Vendas */}
       <Route path="/vendas" element={<ProtectedRoute allowedRoles={["admin", "vendedor"]}><VendasDashboard /></ProtectedRoute>} />
