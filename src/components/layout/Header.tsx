@@ -1,5 +1,6 @@
 import { useAuth } from "@/lib/auth";
 import { getRoleLabel } from "@/lib/roleLabels";
+import { getInitials } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { LogOut, User, Menu } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import logo from "@/assets/logo.jpeg";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { FilialSelector } from "@/components/layout/FilialSelector";
 
 interface HeaderProps {
@@ -56,9 +57,8 @@ export function Header({ onMenuClick }: HeaderProps) {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5">
                 <Avatar className="h-8 w-8">
-                  {profile?.avatar_url && <AvatarImage src={profile.avatar_url} alt={profile?.name || ""} />}
                   <AvatarFallback className="bg-primary/10 text-primary">
-                    <User className="h-4 w-4" />
+                    {getInitials(profile?.name)}
                   </AvatarFallback>
                 </Avatar>
                 <div className="hidden text-left md:block">

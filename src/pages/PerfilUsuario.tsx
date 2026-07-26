@@ -4,7 +4,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { AvatarUpload } from "@/components/AvatarUpload";
 import { useAuth } from "@/lib/auth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -56,24 +55,8 @@ export default function PerfilUsuario() {
       <div className="mx-auto max-w-2xl space-y-6">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Meu Perfil</h1>
-          <p className="text-muted-foreground">Gerencie suas informações de contato e foto de perfil</p>
+          <p className="text-muted-foreground">Gerencie suas informações de contato</p>
         </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Foto de Perfil</CardTitle>
-            <CardDescription>JPG ou PNG, até 5MB</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <AvatarUpload
-              userId={user.id}
-              currentUrl={profile.avatar_url}
-              name={profile.name}
-              size="lg"
-              onUploaded={() => refreshProfile()}
-            />
-          </CardContent>
-        </Card>
 
         <Card>
           <CardHeader>

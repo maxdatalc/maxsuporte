@@ -8,7 +8,8 @@ import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Loader2, UserCheck, UserX, Settings } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { getInitials } from "@/lib/utils";
 import { getRoleLabel, MODULE_LABELS, ALL_MODULES } from "@/lib/roleLabels";
 import {
   Dialog,
@@ -26,7 +27,6 @@ interface UserWithRole {
   role: string;
   is_active: boolean;
   created_at: string;
-  avatar_url: string | null;
 }
 
 interface ModulePermission {
@@ -51,7 +51,7 @@ export default function UsuariosAdmin() {
     try {
       const { data: profiles } = await supabase
         .from("profiles")
-        .select("id, user_id, name, email, is_active, created_at, avatar_url");
+        .select("id, user_id, name, email, is_active, created_at");
 
       if (profiles) {
         const userIds = profiles.map((p) => p.user_id);
@@ -70,7 +70,6 @@ export default function UsuariosAdmin() {
           role: rolesMap.get(p.user_id) || "implantador",
           is_active: p.is_active ?? true,
           created_at: p.created_at,
-          avatar_url: (p as any).avatar_url ?? null,
         }));
 
         setUsers(usersWithRoles);
@@ -239,7 +238,6 @@ export default function UsuariosAdmin() {
                   >
                     <div className="flex items-center gap-4">
                       <Avatar className="h-10 w-10">
-                        {user.avatar_url && <AvatarImage src={user.avatar_url} alt={user.name} />}
                         <AvatarFallback
                           className={
                             user.is_active
@@ -247,7 +245,7 @@ export default function UsuariosAdmin() {
                               : "bg-destructive/10 text-destructive"
                           }
                         >
-                          {user.is_active ? <UserCheck className="h-5 w-5" /> : <UserX className="h-5 w-5" />}
+                          {getInitials(user.name)}
                         </AvatarFallback>
                       </Avatar>
                       <div>

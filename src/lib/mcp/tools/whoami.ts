@@ -22,7 +22,7 @@ export default defineTool({
     const supabase = supabaseForUser(ctx);
     const userId = ctx.getUserId();
     const [{ data: profile }, { data: roles }, { data: filiais }] = await Promise.all([
-      supabase.from("profiles").select("name, email, avatar_url, is_active").eq("user_id", userId).maybeSingle(),
+      supabase.from("profiles").select("name, email, is_active").eq("user_id", userId).maybeSingle(),
       supabase.from("user_roles").select("role").eq("user_id", userId),
       supabase.from("user_filiais").select("filial_id, role").eq("user_id", userId),
     ]);
