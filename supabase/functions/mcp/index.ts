@@ -17,7 +17,7 @@ function supabaseForUser(ctx) {
 var whoami_default = defineTool({
   name: "whoami",
   title: "Quem sou eu",
-  description: "Retorna o perfil do usu\xE1rio autenticado no MAX SUPORTE: nome, e-mail, papel (admin, analista/implantador, vendedor) e filiais vinculadas.",
+  description: "Retorna o perfil do usu\xE1rio autenticado no MAX SUPORTE: nome, e-mail, papel (admin, analista/implantador) e filiais vinculadas.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (_input, ctx) => {
@@ -27,7 +27,7 @@ var whoami_default = defineTool({
     const supabase = supabaseForUser(ctx);
     const userId = ctx.getUserId();
     const [{ data: profile }, { data: roles }, { data: filiais }] = await Promise.all([
-      supabase.from("profiles").select("name, email, avatar_url, is_active").eq("user_id", userId).maybeSingle(),
+      supabase.from("profiles").select("name, email, is_active").eq("user_id", userId).maybeSingle(),
       supabase.from("user_roles").select("role").eq("user_id", userId),
       supabase.from("user_filiais").select("filial_id, role").eq("user_id", userId)
     ]);
@@ -80,120 +80,18 @@ var list_implementations_default = defineTool2({
   }
 });
 
-// src/lib/mcp/tools/list-demands.ts
-import { createClient as createClient3 } from "npm:@supabase/supabase-js@^2.90.1";
-import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.24.0";
-import { z as z2 } from "npm:zod@^4.4.3";
-function supabaseForUser3(ctx) {
-  return createClient3(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY, {
-    global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
-    auth: { persistSession: false, autoRefreshToken: false }
-  });
-}
-var list_demands_default = defineTool3({
-  name: "list_demands",
-  title: "Listar demandas",
-  description: "Lista demandas operacionais (POP) vis\xEDveis ao usu\xE1rio autenticado, respeitando RLS. Filtro opcional por status.",
-  inputSchema: {
-    status: z2.string().optional().describe("Filtrar por status (ex.: aberta, em_andamento, concluida)."),
-    limit: z2.number().int().min(1).max(100).optional()
-  },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: async ({ status, limit }, ctx) => {
-    if (!ctx.isAuthenticated()) {
-      return { content: [{ type: "text", text: "N\xE3o autenticado" }], isError: true };
-    }
-    let q = supabaseForUser3(ctx).from("demands").select("id, title, status, priority, client_id, requester_id, filial_id, created_at").order("created_at", { ascending: false }).limit(limit ?? 25);
-    if (status) q = q.eq("status", status);
-    const { data, error } = await q;
-    if (error) return { content: [{ type: "text", text: error.message }], isError: true };
-    return {
-      content: [{ type: "text", text: JSON.stringify(data, null, 2) }],
-      structuredContent: { items: data ?? [] }
-    };
-  }
-});
-
-// src/lib/mcp/tools/list-visitas.ts
-import { createClient as createClient4 } from "npm:@supabase/supabase-js@^2.90.1";
-import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.24.0";
-import { z as z3 } from "npm:zod@^4.4.3";
-function supabaseForUser4(ctx) {
-  return createClient4(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY, {
-    global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
-    auth: { persistSession: false, autoRefreshToken: false }
-  });
-}
-var list_visitas_default = defineTool4({
-  name: "list_visitas",
-  title: "Listar visitas",
-  description: "Lista visitas cadastradas vis\xEDveis ao usu\xE1rio autenticado (respeita RLS por filial e papel).",
-  inputSchema: {
-    status: z3.string().optional().describe("Filtrar por status (aberta, analisada, concluida...)."),
-    limit: z3.number().int().min(1).max(100).optional()
-  },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: async ({ status, limit }, ctx) => {
-    if (!ctx.isAuthenticated()) {
-      return { content: [{ type: "text", text: "N\xE3o autenticado" }], isError: true };
-    }
-    let q = supabaseForUser4(ctx).from("visitas").select("id, titulo, tipo, status, client_id, implantacao_id, filial_id, created_at").order("created_at", { ascending: false }).limit(limit ?? 25);
-    if (status) q = q.eq("status", status);
-    const { data, error } = await q;
-    if (error) return { content: [{ type: "text", text: error.message }], isError: true };
-    return {
-      content: [{ type: "text", text: JSON.stringify(data, null, 2) }],
-      structuredContent: { items: data ?? [] }
-    };
-  }
-});
-
-// src/lib/mcp/tools/list-deals.ts
-import { createClient as createClient5 } from "npm:@supabase/supabase-js@^2.90.1";
-import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.24.0";
-import { z as z4 } from "npm:zod@^4.4.3";
-function supabaseForUser5(ctx) {
-  return createClient5(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY, {
-    global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
-    auth: { persistSession: false, autoRefreshToken: false }
-  });
-}
-var list_deals_default = defineTool5({
-  name: "list_deals",
-  title: "Listar neg\xF3cios (CRM)",
-  description: "Lista neg\xF3cios (deals) do m\xF3dulo CRM/Vendas vis\xEDveis ao usu\xE1rio autenticado, respeitando RLS.",
-  inputSchema: {
-    stage: z4.string().optional().describe("Filtrar por etapa do pipeline."),
-    limit: z4.number().int().min(1).max(100).optional()
-  },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
-  handler: async ({ stage, limit }, ctx) => {
-    if (!ctx.isAuthenticated()) {
-      return { content: [{ type: "text", text: "N\xE3o autenticado" }], isError: true };
-    }
-    let q = supabaseForUser5(ctx).from("deals").select("id, title, stage, value, lead_id, owner_id, filial_id, created_at").order("created_at", { ascending: false }).limit(limit ?? 25);
-    if (stage) q = q.eq("stage", stage);
-    const { data, error } = await q;
-    if (error) return { content: [{ type: "text", text: error.message }], isError: true };
-    return {
-      content: [{ type: "text", text: JSON.stringify(data, null, 2) }],
-      structuredContent: { items: data ?? [] }
-    };
-  }
-});
-
 // src/lib/mcp/index.ts
 var projectRef = "ryqxazrzbokgrljfflew";
 var mcp_default = defineMcp({
   name: "max-suporte-mcp",
   title: "MAX SUPORTE",
   version: "0.1.0",
-  instructions: "Ferramentas do MAX SUPORTE. Cada chamada executa como o usu\xE1rio autenticado e respeita RLS por filial e papel (admin, analista, vendedor). Use `whoami` para checar identidade e as ferramentas `list_*` para consultar implanta\xE7\xF5es, demandas, visitas e neg\xF3cios do CRM.",
+  instructions: "Ferramentas do MAX SUPORTE. Cada chamada executa como o usu\xE1rio autenticado e respeita RLS por filial e papel (admin, analista). Use `whoami` para checar identidade e `list_implementations` para consultar implanta\xE7\xF5es.",
   auth: auth.oauth.issuer({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated"
   }),
-  tools: [whoami_default, list_implementations_default, list_demands_default, list_visitas_default, list_deals_default]
+  tools: [whoami_default, list_implementations_default]
 });
 
 // lovable-mcp-supabase-entry.ts
