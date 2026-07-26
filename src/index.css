@@ -38,12 +38,12 @@
 
     --radius: 0.75rem;
 
-    --sidebar-background: 358 55% 32%;
+    --sidebar-background: 358 74% 36%;
     --sidebar-foreground: 0 0% 100%;
     --sidebar-primary: 0 0% 100%;
     --sidebar-primary-foreground: 358 80% 44%;
     --sidebar-accent: 0 0% 100%;
-    --sidebar-accent-foreground: 358 55% 32%;
+    --sidebar-accent-foreground: 358 74% 36%;
     --sidebar-border: 358 40% 28%;
     --sidebar-ring: 0 0% 100%;
 
@@ -53,7 +53,7 @@
     --chart-4: 358 30% 82%;
     --chart-5: 358 20% 92%;
 
-    --sidebar: 358 55% 32%;
+    --sidebar: 358 74% 36%;
 
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
