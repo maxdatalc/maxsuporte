@@ -6,7 +6,7 @@ import { getRoleLabel } from "@/lib/roleLabels";
 import {
   LayoutDashboard, ClipboardList, X, BarChart3, Calendar, DollarSign,
   FileText, ClipboardCheck,
-  ListChecks, FolderKanban, Users, ChevronDown, Settings, PieChart, UserCircle, DatabaseBackup,
+  Users, ChevronDown, Settings, PieChart, UserCircle, DatabaseBackup,
   Briefcase, Target, FileSignature, KanbanSquare, Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -43,7 +43,6 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     { to: "/admin", icon: LayoutDashboard, label: "Dashboard" },
     { to: "/admin/implantacoes", icon: ClipboardList, label: "Implantações" },
     { to: "/admin/minhas-implantacoes", icon: ClipboardList, label: "Minhas Implantações" },
-    { to: "/admin/demandas", icon: FolderKanban, label: "Demandas" },
     { to: "/admin/disponibilidade", icon: Calendar, label: "Disponibilidade" },
     {
       type: "group",
@@ -51,7 +50,6 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       label: "Relatórios",
       children: [
         { to: "/admin/relatorios", icon: BarChart3, label: "Produtividade" },
-        { to: "/admin/relatorio-demandas", icon: BarChart3, label: "Performance Operacional" },
         { to: "/admin/relatorio-comissoes", icon: FileText, label: "Comissões" },
         { to: "/admin/solicitacoes-conclusao", icon: ClipboardCheck, label: "Solicitações" },
       ],
@@ -75,7 +73,6 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         { to: "/admin/usuarios", icon: Users, label: "Gestão de Usuários" },
         { to: "/admin/filiais", icon: Building2, label: "Filiais" },
         { to: "/admin/comissoes", icon: DollarSign, label: "Comissões" },
-        { to: "/admin/demandas/modelos", icon: ListChecks, label: "Modelos POP" },
         { to: "/admin/perfil", icon: UserCircle, label: "Meu Perfil" },
         { to: "/admin/backup", icon: DatabaseBackup, label: "Backup & Restauração" },
       ],
@@ -99,7 +96,6 @@ export function Sidebar({ open, onClose }: SidebarProps) {
   const implantadorItems: SidebarItem[] = [
     { to: "/implantador", icon: LayoutDashboard, label: "Dashboard" },
     { to: "/implantador/implantacoes", icon: ClipboardList, label: "Minhas Implantações" },
-    { to: "/implantador/demandas", icon: FolderKanban, label: "Demandas" },
     { to: "/implantador/relatorio-comissoes", icon: FileText, label: "Relatório" },
     {
       type: "group",

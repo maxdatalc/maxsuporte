@@ -21,12 +21,6 @@ import RelatorioComissoes from "./pages/admin/RelatorioComissoes";
 import SolicitacoesConclusao from "./pages/admin/SolicitacoesConclusao";
 import ImplantadorDashboard from "./pages/implantador/ImplantadorDashboard";
 import ImplantacaoDetalhe from "./pages/ImplantacaoDetalhe";
-import DemandTemplates from "./pages/admin/DemandTemplates";
-import DemandTemplateForm from "./pages/admin/DemandTemplateForm";
-import DemandasList from "./pages/demandas/DemandasList";
-import NovaDemanda from "./pages/demandas/NovaDemanda";
-import DemandaDetalhe from "./pages/demandas/DemandaDetalhe";
-import RelatorioDemandas from "./pages/admin/RelatorioDemandas";
 import NotFound from "./pages/NotFound";
 import ResetPassword from "./pages/ResetPassword";
 import PerfilUsuario from "./pages/PerfilUsuario";
@@ -94,23 +88,12 @@ function AppRoutes() {
       <Route path="/admin/comissoes" element={<ProtectedRoute allowedRoles={["admin"]}><ConfiguracaoComissoes /></ProtectedRoute>} />
       <Route path="/admin/relatorio-comissoes" element={<ProtectedRoute allowedRoles={["admin"]}><RelatorioComissoes /></ProtectedRoute>} />
       <Route path="/admin/solicitacoes-conclusao" element={<ProtectedRoute allowedRoles={["admin"]}><SolicitacoesConclusao /></ProtectedRoute>} />
-      {/* Demand routes - Admin */}
-      <Route path="/admin/demandas" element={<ProtectedRoute allowedRoles={["admin"]}><DemandasList /></ProtectedRoute>} />
-      <Route path="/admin/demandas/nova" element={<ProtectedRoute allowedRoles={["admin"]}><NovaDemanda /></ProtectedRoute>} />
-      <Route path="/admin/demandas/:id" element={<ProtectedRoute allowedRoles={["admin"]}><DemandaDetalhe /></ProtectedRoute>} />
-      <Route path="/admin/demandas/modelos" element={<ProtectedRoute allowedRoles={["admin"]}><DemandTemplates /></ProtectedRoute>} />
-      <Route path="/admin/demandas/modelos/novo" element={<ProtectedRoute allowedRoles={["admin"]}><DemandTemplateForm /></ProtectedRoute>} />
-      <Route path="/admin/demandas/modelos/:id" element={<ProtectedRoute allowedRoles={["admin"]}><DemandTemplateForm /></ProtectedRoute>} />
-      <Route path="/admin/relatorio-demandas" element={<ProtectedRoute allowedRoles={["admin"]}><RelatorioDemandas /></ProtectedRoute>} />
 
       {/* Implantador/Analista routes */}
       <Route path="/implantador" element={<ProtectedRoute allowedRoles={["implantador"]}><ImplantadorDashboard /></ProtectedRoute>} />
       <Route path="/implantador/implantacoes" element={<ProtectedRoute allowedRoles={["implantador"]}><ImplantadorDashboard /></ProtectedRoute>} />
       <Route path="/implantador/implantacoes/:id" element={<ProtectedRoute allowedRoles={["implantador"]}><ImplantacaoDetalhe /></ProtectedRoute>} />
       <Route path="/implantador/relatorio-comissoes" element={<ProtectedRoute allowedRoles={["implantador"]}><RelatorioComissoes /></ProtectedRoute>} />
-      {/* Demand routes - Analista */}
-      <Route path="/implantador/demandas" element={<ProtectedRoute allowedRoles={["implantador"]}><DemandasList /></ProtectedRoute>} />
-      <Route path="/implantador/demandas/:id" element={<ProtectedRoute allowedRoles={["implantador"]}><DemandaDetalhe /></ProtectedRoute>} />
       <Route path="/implantador/perfil" element={<ProtectedRoute allowedRoles={["implantador"]}><PerfilUsuario /></ProtectedRoute>} />
       <Route path="/admin/perfil" element={<ProtectedRoute allowedRoles={["admin"]}><PerfilUsuario /></ProtectedRoute>} />
       <Route path="/admin/backup" element={<ProtectedRoute allowedRoles={["admin"]}><BackupRestore /></ProtectedRoute>} />
