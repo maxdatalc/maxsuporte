@@ -9,33 +9,21 @@ import { useToast } from "@/hooks/use-toast";
 
 // Ordem importa para restauração (respeita dependências lógicas)
 const TABLES = [
+  "filiais",
   "profiles",
   "user_roles",
+  "user_filiais",
   "user_module_permissions",
   "clients",
   "commission_rules",
   "commission_types",
-  "demand_templates",
-  "demand_template_steps",
-  "base_conhecimento_ia",
   "implementations",
   "implementation_analysts",
   "implementation_commissions",
   "checklist_items",
   "episodes",
-  "conclusion_requests",
-  "demands",
-  "demand_analysts",
-  "demand_steps",
-  "demand_step_evidences",
-  "visitas",
-  "visita_interacoes",
-  "recomendacoes_visita",
-  "ia_recommendations",
-  "ia_recommendation_versions",
-  "ia_feedback",
-  "ia_training_dataset",
   "episode_audit_logs",
+  "conclusion_requests",
   "webhook_logs",
 ] as const;
 
@@ -44,27 +32,16 @@ const TABLES = [
 const USER_FK_COLUMNS: Record<string, string[]> = {
   profiles: ["user_id"],
   user_roles: ["user_id"],
+  user_filiais: ["user_id"],
   user_module_permissions: ["user_id"],
   clients: ["created_by"],
   commission_rules: ["created_by"],
   commission_types: ["created_by"],
-  demand_templates: ["created_by"],
-  base_conhecimento_ia: ["created_by"],
   implementations: ["implementer_id", "created_by"],
   implementation_analysts: ["analyst_id"],
   implementation_commissions: ["created_by"],
   episodes: ["created_by"],
   conclusion_requests: ["requester_id", "approved_by"],
-  demands: ["created_by"],
-  demand_analysts: ["analyst_id"],
-  demand_steps: ["completed_by"],
-  demand_step_evidences: ["uploaded_by"],
-  visitas: ["analista_id"],
-  visita_interacoes: ["usuario_id"],
-  ia_recommendations: ["created_by"],
-  ia_recommendation_versions: ["edited_by"],
-  ia_feedback: ["user_id"],
-  ia_training_dataset: ["validated_by"],
   episode_audit_logs: ["edited_by"],
 };
 
@@ -314,11 +291,8 @@ export default function BackupRestore() {
               <li>Faça o <strong>remix</strong> e abra o novo projeto.</li>
               <li>No projeto novo, <strong>cadastre todos os usuários com os MESMOS e-mails</strong> do projeto antigo (qualquer senha).</li>
               <li>Volte aqui (Backup) no projeto novo e importe o JSON.</li>
-              <li>O sistema cruza os e-mails e <strong>remapeia automaticamente</strong> todos os IDs de usuário em implantações, demandas, comissões, episódios, visitas, etc.</li>
+              <li>O sistema cruza os e-mails e <strong>remapeia automaticamente</strong> todos os IDs de usuário em implantações, comissões, episódios, etc.</li>
             </ol>
-            <p className="text-sm">
-              Arquivos de storage (avatares, evidências) precisam ser migrados separadamente.
-            </p>
           </AlertDescription>
         </Alert>
 
