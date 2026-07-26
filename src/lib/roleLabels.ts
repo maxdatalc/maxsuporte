@@ -14,7 +14,6 @@ export function getRoleLabel(role: string): string {
 
 export const MODULE_LABELS: Record<string, string> = {
   implantacoes: "Implantações",
-  visitas: "Visitas",
   demandas: "Demandas",
   relatorios: "Relatórios",
   administracao: "Administração",
