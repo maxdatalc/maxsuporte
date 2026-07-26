@@ -7,7 +7,7 @@ import {
   LayoutDashboard, ClipboardList, X, BarChart3, Calendar, DollarSign,
   FileText, ClipboardCheck,
   Users, ChevronDown, Settings, PieChart, UserCircle, DatabaseBackup,
-  Briefcase, Target, FileSignature, KanbanSquare, Building2,
+  Building2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -56,17 +56,6 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     },
     {
       type: "group",
-      icon: Briefcase,
-      label: "CRM / Vendas",
-      children: [
-        { to: "/vendas", icon: LayoutDashboard, label: "Dashboard Vendas" },
-        { to: "/vendas/leads", icon: Target, label: "Leads" },
-        { to: "/vendas/pipeline", icon: KanbanSquare, label: "Pipeline" },
-        { to: "/vendas/configuracoes", icon: FileSignature, label: "Config. CRM" },
-      ],
-    },
-    {
-      type: "group",
       icon: Settings,
       label: "Configurações",
       children: [
@@ -75,20 +64,6 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         { to: "/admin/comissoes", icon: DollarSign, label: "Comissões" },
         { to: "/admin/perfil", icon: UserCircle, label: "Meu Perfil" },
         { to: "/admin/backup", icon: DatabaseBackup, label: "Backup & Restauração" },
-      ],
-    },
-  ];
-
-  const vendedorItems: SidebarItem[] = [
-    { to: "/vendas", icon: LayoutDashboard, label: "Dashboard" },
-    { to: "/vendas/leads", icon: Target, label: "Leads" },
-    { to: "/vendas/pipeline", icon: KanbanSquare, label: "Pipeline" },
-    {
-      type: "group",
-      icon: Settings,
-      label: "Configurações",
-      children: [
-        { to: "/vendas/perfil", icon: UserCircle, label: "Perfil" },
       ],
     },
   ];
@@ -107,7 +82,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
     },
   ];
 
-  const items = role === "admin" ? adminItems : role === "vendedor" ? vendedorItems : implantadorItems;
+  const items = role === "admin" ? adminItems : implantadorItems;
 
   // Auto-expand groups that contain the active route
   const getInitialExpanded = () => {

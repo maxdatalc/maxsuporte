@@ -12,7 +12,7 @@ export default defineTool({
   name: "whoami",
   title: "Quem sou eu",
   description:
-    "Retorna o perfil do usuário autenticado no MAX SUPORTE: nome, e-mail, papel (admin, analista/implantador, vendedor) e filiais vinculadas.",
+    "Retorna o perfil do usuário autenticado no MAX SUPORTE: nome, e-mail, papel (admin, analista/implantador) e filiais vinculadas.",
   inputSchema: {},
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (_input, ctx) => {

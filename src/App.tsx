@@ -25,12 +25,6 @@ import NotFound from "./pages/NotFound";
 import ResetPassword from "./pages/ResetPassword";
 import PerfilUsuario from "./pages/PerfilUsuario";
 import BackupRestore from "./pages/admin/BackupRestore";
-import VendasDashboard from "./pages/vendas/VendasDashboard";
-import LeadsList from "./pages/vendas/LeadsList";
-import PipelineKanban from "./pages/vendas/PipelineKanban";
-import DealDetalhe from "./pages/vendas/DealDetalhe";
-import ConfiguracoesCRM from "./pages/vendas/ConfiguracoesCRM";
-import FormularioPublico from "./pages/vendas/FormularioPublico";
 import OAuthConsent from "./pages/OAuthConsent";
 
 
@@ -43,7 +37,7 @@ function AppRoutes() {
     ? new URLSearchParams(window.location.search).get("next")
     : null;
   const safeNext = nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//") ? nextParam : null;
-  const roleHome = role === "admin" ? "/admin" : role === "vendedor" ? "/vendas" : "/implantador";
+  const roleHome = role === "admin" ? "/admin" : "/implantador";
   const postLogin = safeNext ?? roleHome;
 
   if (loading) {
@@ -60,19 +54,8 @@ function AppRoutes() {
       <Route path="/login" element={user ? <Navigate to={postLogin} replace /> : <Login />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/cadastro" element={user ? <Navigate to={postLogin} replace /> : <Cadastro />} />
-      <Route path="/formulario/:dealId/:token" element={<FormularioPublico />} />
       <Route path="/.lovable/oauth/consent" element={<OAuthConsent />} />
       <Route path="/" element={user ? <Navigate to={roleHome} replace /> : <Navigate to="/login" replace />} />
-
-
-
-      {/* CRM / Vendas */}
-      <Route path="/vendas" element={<ProtectedRoute allowedRoles={["admin", "vendedor"]}><VendasDashboard /></ProtectedRoute>} />
-      <Route path="/vendas/leads" element={<ProtectedRoute allowedRoles={["admin", "vendedor"]}><LeadsList /></ProtectedRoute>} />
-      <Route path="/vendas/pipeline" element={<ProtectedRoute allowedRoles={["admin", "vendedor"]}><PipelineKanban /></ProtectedRoute>} />
-      <Route path="/vendas/deals/:id" element={<ProtectedRoute allowedRoles={["admin", "vendedor"]}><DealDetalhe /></ProtectedRoute>} />
-      <Route path="/vendas/configuracoes" element={<ProtectedRoute allowedRoles={["admin"]}><ConfiguracoesCRM /></ProtectedRoute>} />
-      <Route path="/vendas/perfil" element={<ProtectedRoute allowedRoles={["vendedor"]}><PerfilUsuario /></ProtectedRoute>} />
 
       {/* Admin routes */}
       <Route path="/admin" element={<ProtectedRoute allowedRoles={["admin"]}><AdminDashboard /></ProtectedRoute>} />

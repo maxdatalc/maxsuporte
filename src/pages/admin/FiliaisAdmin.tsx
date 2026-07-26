@@ -335,7 +335,6 @@ export default function FiliaisAdmin() {
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="admin">Administrador</SelectItem>
-                    <SelectItem value="vendedor">Vendedor</SelectItem>
                     <SelectItem value="implantador">Analista (implantador)</SelectItem>
                   </SelectContent>
                 </Select>
