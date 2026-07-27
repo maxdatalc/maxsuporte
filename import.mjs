@@ -37,13 +37,13 @@ const USER_FK = {
   user_roles: ["user_id"],
   user_filiais: ["user_id"],
   user_module_permissions: ["user_id"],
+  clients: ["created_by"],
   implementations: ["implementer_id", "created_by"],
   implementation_analysts: ["analyst_id"],
-  implementation_commissions: ["analyst_id", "created_by"],
-  episodes: ["created_by", "user_id"],
-  episode_audit_logs: ["user_id"],
-  conclusion_requests: ["requested_by", "reviewed_by"],
-  checklist_items: ["completed_by"],
+  implementation_commissions: ["created_by"],
+  episodes: ["created_by"],
+  episode_audit_logs: ["edited_by"],
+  conclusion_requests: ["requester_id", "approved_by"],
 };
 
 async function buildUserMap(oldRows) {
