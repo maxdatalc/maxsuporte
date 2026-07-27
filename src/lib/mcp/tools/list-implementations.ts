@@ -3,7 +3,7 @@ import { defineTool, type ToolContext } from "@lovable.dev/mcp-js";
 import { z } from "zod";
 
 function supabaseForUser(ctx: ToolContext) {
-  return createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_PUBLISHABLE_KEY!, {
+  return createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!, {
     global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
     auth: { persistSession: false, autoRefreshToken: false },
   });
@@ -28,7 +28,7 @@ export default defineTool({
     }
     let q = supabaseForUser(ctx)
       .from("implementations")
-      .select("id, client_id, status, start_date, expected_end_date, progress, filial_id, created_at")
+      .select("id, client_id, status, start_date, end_date, filial_id, created_at")
       .order("created_at", { ascending: false })
       .limit(limit ?? 25);
     if (status) q = q.eq("status", status);

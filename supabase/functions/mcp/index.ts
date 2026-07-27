@@ -9,7 +9,7 @@ import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.24.0";
 import { createClient } from "npm:@supabase/supabase-js@^2.90.1";
 import { defineTool } from "npm:@lovable.dev/mcp-js@0.24.0";
 function supabaseForUser(ctx) {
-  return createClient(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY, {
+  return createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY, {
     global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
     auth: { persistSession: false, autoRefreshToken: false }
   });
@@ -51,7 +51,7 @@ import { createClient as createClient2 } from "npm:@supabase/supabase-js@^2.90.1
 import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.24.0";
 import { z } from "npm:zod@^4.4.3";
 function supabaseForUser2(ctx) {
-  return createClient2(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY, {
+  return createClient2(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY, {
     global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
     auth: { persistSession: false, autoRefreshToken: false }
   });
@@ -69,7 +69,7 @@ var list_implementations_default = defineTool2({
     if (!ctx.isAuthenticated()) {
       return { content: [{ type: "text", text: "N\xE3o autenticado" }], isError: true };
     }
-    let q = supabaseForUser2(ctx).from("implementations").select("id, client_id, status, start_date, expected_end_date, progress, filial_id, created_at").order("created_at", { ascending: false }).limit(limit ?? 25);
+    let q = supabaseForUser2(ctx).from("implementations").select("id, client_id, status, start_date, end_date, filial_id, created_at").order("created_at", { ascending: false }).limit(limit ?? 25);
     if (status) q = q.eq("status", status);
     const { data, error } = await q;
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
@@ -81,7 +81,7 @@ var list_implementations_default = defineTool2({
 });
 
 // src/lib/mcp/index.ts
-var projectRef = "ryqxazrzbokgrljfflew";
+var projectRef = "bgdhfztftsqsjsjnmzqp";
 var mcp_default = defineMcp({
   name: "max-suporte-mcp",
   title: "MAX SUPORTE",
